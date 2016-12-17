@@ -1,0 +1,90 @@
+﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp1.0</TargetFramework>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\WalletController.cs" />
+    <Compile Include="Models\Wallet\BitcoinService.cs" />
+    <Compile Include="Models\Wallet\IBitcoinService.cs" />
+    <Compile Include="Models\WebSockets\BitcoinSocketHandler.cs" />
+    <Compile Include="Models\WebSockets\ISocketHandler.cs" />
+    <Compile Include="Models\WebSockets\SocketHandler.cs" />
+    <Compile Include="Models\WebSockets\SocketMiddlewareExtensions.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Startup.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="appsettings.json" />
+    <Content Include="Content\css\site.css" />
+    <Content Include="Content\css\site.min.css" />
+    <Content Include="Content\favicon.ico" />
+    <Content Include="Content\lib\bootstrap\.bower.json" />
+    <Content Include="Content\lib\bootstrap\dist\css\bootstrap-theme.css" />
+    <Content Include="Content\lib\bootstrap\dist\css\bootstrap-theme.min.css" />
+    <Content Include="Content\lib\bootstrap\dist\css\bootstrap.css" />
+    <Content Include="Content\lib\bootstrap\dist\css\bootstrap.min.css" />
+    <Content Include="Content\lib\bootstrap\dist\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\lib\bootstrap\dist\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\lib\bootstrap\dist\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\lib\jquery-validation-unobtrusive\.bower.json" />
+    <Content Include="Content\lib\jquery-validation\.bower.json" />
+    <Content Include="Content\lib\jquery\.bower.json" />
+    <Content Include="Content\lib\jquery\LICENSE.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\images\banner1.svg" />
+    <None Include="Content\images\banner2.svg" />
+    <None Include="Content\images\banner3.svg" />
+    <None Include="Content\images\banner4.svg" />
+    <None Include="Content\js\site.js" />
+    <None Include="Content\js\site.min.js" />
+    <None Include="Content\lib\bootstrap\dist\css\bootstrap-theme.css.map" />
+    <None Include="Content\lib\bootstrap\dist\css\bootstrap-theme.min.css.map" />
+    <None Include="Content\lib\bootstrap\dist\css\bootstrap.css.map" />
+    <None Include="Content\lib\bootstrap\dist\css\bootstrap.min.css.map" />
+    <None Include="Content\lib\bootstrap\dist\fonts\glyphicons-halflings-regular.svg" />
+    <None Include="Content\lib\bootstrap\dist\fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="Content\lib\bootstrap\dist\js\bootstrap.js" />
+    <None Include="Content\lib\bootstrap\dist\js\bootstrap.min.js" />
+    <None Include="Content\lib\bootstrap\dist\js\npm.js" />
+    <None Include="Content\lib\bootstrap\LICENSE" />
+    <None Include="Content\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
+    <None Include="Content\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
+    <None Include="Content\lib\jquery-validation\dist\additional-methods.js" />
+    <None Include="Content\lib\jquery-validation\dist\additional-methods.min.js" />
+    <None Include="Content\lib\jquery-validation\dist\jquery.validate.js" />
+    <None Include="Content\lib\jquery-validation\dist\jquery.validate.min.js" />
+    <None Include="Content\lib\jquery-validation\LICENSE.md" />
+    <None Include="Content\lib\jquery\dist\jquery.js" />
+    <None Include="Content\lib\jquery\dist\jquery.min.js" />
+    <None Include="Content\lib\jquery\dist\jquery.min.map" />
+    <None Include="Content\_references.js" />
+    <None Include="nlog.config" />
+    <None Include="Views\Home\Index.cshtml" />
+    <None Include="Views\Shared\Error.cshtml" />
+    <None Include="Views\Shared\_Layout.cshtml" />
+    <None Include="Views\_ViewImports.cshtml" />
+    <None Include="Views\_ViewStart.cshtml" />
+    <None Include="Wallets\hidden.dat" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="1.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor" Version="1.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel.Https" Version="1.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.WebSockets.Server" Version="0.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="1.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.0.1" />
+    <PackageReference Include="Microsoft.NETCore.App" Version="1.0.1" />
+    <PackageReference Include="NBitcoin" Version="3.0.0.57" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.0.0-rtm-alpha5" />
+    <PackageReference Include="QBitNinja.Client" Version="1.0.3.28" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CodersBand.Bitcoin\CodersBand.Bitcoin.csproj" />
+  </ItemGroup>
+</Project>
