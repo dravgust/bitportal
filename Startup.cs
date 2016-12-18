@@ -41,8 +41,9 @@ namespace BitPortal
             services.AddTransient<ISocketHandler, BitcoinSocketHandler>();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApplicationLifetime applicationLifetime)
         {
+            applicationLifetime.ApplicationStopping.Register(OnShutdown);
             loggerFactory.AddNLog();
 
             if (env.IsDevelopment())
@@ -81,6 +82,11 @@ namespace BitPortal
             //    Console.WriteLine(other.Message);
             //}
 
+        }
+
+        private static void OnShutdown()
+        {
+            
         }
     }
 }

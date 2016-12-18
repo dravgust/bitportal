@@ -3,6 +3,7 @@
 
 # Custom
 .svn/
+Content/lib/
 
 # User-specific files
 *.suo

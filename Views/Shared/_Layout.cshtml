@@ -26,7 +26,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">XMarket</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand"></a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -37,6 +37,7 @@
     </div>
     <div class="container body-content">
         @RenderBody()
+        @RenderSection("views", required: true)
         <hr />
         <footer>
             <p>&copy; 2016 - Codrsband Ltd.</p>
@@ -46,7 +47,27 @@
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/lib/knockout/dist/knockout.js"></script>
+        <script src="~/lib/sammy/lib/sammy.js"></script>
+        <script src="~/lib/bootbox.js/bootbox.js"></script>
+        <script src="~/lib/moment/moment.js"></script>
+
+        <script src="~/js/core/extentions.js"></script>
+        <script src="~/js/core/components.js"></script>
+     
+        <script src="~/js/core/controller.js"></script>
+        <script src="~/js/app/datamodel.js"></script>
+        <script src="~/js/app/viewmodel.js"></script>
+
+        <script src="~/js/app/websockets.js"></script>
+
+        <script src="~/js/core/viewmodel.js"></script>
+        <script src="~/js/content/home.viewmodel.js"></script>
+
+        <script src="~/js/app/_run.js"></script>
+        
+
+        @*<script src="~/js/site.js" asp-append-version="true"></script>*@
     </environment>
     <environment names="Staging,Production">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
