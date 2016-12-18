@@ -30,18 +30,10 @@ var app;
                 //});
 
                 self.data.balance()
-                    .done(function (data) {
-                       
-                        self.balance(data);
-                    });
+                    .done(function (data) { self.balance(data); });
 
                 self.data.history()
-                    .done(function (data) {
-
-                        self.history(data);
-
-                    });
-
+                    .done(function (data) { self.history(data); });
 
                 app.view(self);
             });

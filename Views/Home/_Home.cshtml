@@ -6,7 +6,7 @@
         
         <div class="row">
             <!-- ko with: balance -->
-            <h2 data-bind="text:confirmed"></h2>
+            <h2 data-bind="text:confirmed + ' &#579'"></h2>
             <!-- /ko -->
         </div>
         <div class="row">
@@ -20,7 +20,7 @@
                 <tbody data-bind="foreach:history">
                     <tr>
                         <td data-bind="text:moment(dateTime).format('DD/MM/YYYY HH:mm')"></td>
-                        <td data-bind="text:amount"></td>
+                        <td data-bind="text:amount + ' &#579'"></td>
                     </tr>
                 </tbody>
             </table>

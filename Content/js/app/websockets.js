@@ -4,7 +4,7 @@
         function sessionHub() {
             var _this = this;
 
-            $().ready(function() {
+            $(function() {
 
                 _this.hub = new WebSocket("ws://localhost:9000");
 
