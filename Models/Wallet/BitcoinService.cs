@@ -12,24 +12,10 @@ namespace BitPortal.Models.Wallet
 {
     public class BitcoinServiceArgs : EventArgs
     {
-        public State State { get; }
-        public int InitializationProgress { private set; get; }
-        public KeyRingBalanceInfo BalanceInfo { private set; get; }
-        public string TransactionId { private set; get; }
-
-        public BitcoinServiceArgs(State state, int progress = 0)
-        {
-            State = state;
-
-            if(State == State.InProgress)
-                InitializationProgress = progress;
-        }
-
-        public BitcoinServiceArgs(KeyRingBalanceInfo balanceInfo, string transactionId)
-        {
-            BalanceInfo = balanceInfo;
-            TransactionId = transactionId;
-        }
+        public State State { set; get; }
+        public int InitializationProgress { set; get; }
+        public KeyRingBalanceInfo BalanceInfo { set; get; }
+        public AddressHistoryRecord Transaction { set; get; }
     }
 
     public class BitcoinService : IBitcoinService
@@ -64,32 +50,45 @@ namespace BitPortal.Models.Wallet
                     throw new Exception("Wrong network");
             }
 
-            _httpKeyRingMonitor = new HttpKeyRingMonitor(keyRing, addressCount: 105);
+            _httpKeyRingMonitor = new HttpKeyRingMonitor(keyRing, addressCount: 100);
 
             // Report initialization progress
             _httpKeyRingMonitor.InitializationStateChanged += delegate (object sender, EventArgs args)
             {
-               var monitor = (HttpKeyRingMonitor)sender;
-                var serviceArgs = new BitcoinServiceArgs(InitializationState = monitor.InitializationState);
-                InitializationStateChanged?.Invoke(this, serviceArgs);              
+                var monitor = (HttpKeyRingMonitor)sender;
+                Console.WriteLine("state changed: " + monitor.InitializationState);
+
+             InitializationState = monitor.InitializationState;
+             InitializationStateChanged?.Invoke(null,
+                        new BitcoinServiceArgs {State = monitor.InitializationState});
             };
 
             _httpKeyRingMonitor.InitializationProgressPercentChanged += delegate (object sender, EventArgs args)
             {
                 var monitor = (HttpKeyRingMonitor)sender;
-                if (monitor.InitializationState == State.InProgress)
-                {
-                    var serviceArgs = new BitcoinServiceArgs(monitor.InitializationState,
-                        InitializationProgress = monitor.InitializationProgressPercent);
-                    InitializationProgressChanged?.Invoke(this, serviceArgs);
-                }
+                Console.WriteLine("progress changed: " + monitor.InitializationProgressPercent);
+
+                InitializationProgress = monitor.InitializationProgressPercent;
+                InitializationProgressChanged?.Invoke(null,
+                    new BitcoinServiceArgs {InitializationProgress = monitor.InitializationProgressPercent});
             };
 
             _httpKeyRingMonitor.BalanceChanged += delegate (object sender, EventArgs args)
             {
                 var monitor = (HttpKeyRingMonitor)sender;
-                var transactionId = monitor.KeyRingHistory.Records.OrderBy(x => x.DateTime).Last().TransactionId;
-                BalanceChanged?.Invoke(this, new BitcoinServiceArgs(monitor.KeyRingBalanceInfo, transactionId));
+
+                Console.WriteLine();
+                Console.WriteLine("Change happened");
+                Console.WriteLine($"Balance of safe: {monitor.KeyRingBalanceInfo.Balance}");
+                Console.WriteLine($"Confirmed balance of safe: {monitor.KeyRingBalanceInfo.Confirmed}");
+                Console.WriteLine($"Unconfirmed balance of safe: {monitor.KeyRingBalanceInfo.Unconfirmed}");
+
+                var transaction = monitor.KeyRingHistory.Records.OrderBy(x => x.DateTime).Last();
+
+                Console.WriteLine($"TransacitonId: {transaction.TransactionId}");
+
+                BalanceChanged?.Invoke(null,
+                    new BitcoinServiceArgs {BalanceInfo = monitor.KeyRingBalanceInfo, Transaction = transaction});
             };
         }
 

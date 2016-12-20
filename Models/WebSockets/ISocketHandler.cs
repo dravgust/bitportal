@@ -7,7 +7,7 @@ namespace BitPortal.Models.WebSockets
     {
         void OnStart();
 
-        void OnMessage();
+        Task OnMessageAsync(string request);
 
         void OnClose();
 

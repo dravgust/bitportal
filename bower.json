@@ -9,6 +9,9 @@
     "sammy": "^0.7.6",
     "knockout": "^3.4.1",
     "bootbox.js": "bootbox#^4.4.0",
-    "moment": "^2.17.1"
+    "moment": "^2.17.1",
+    "kjua": "lrsjng/kjua#^0.1.1",
+    "datatables": "^1.10.13",
+    "animate.css": "^3.5.2"
   }
 }

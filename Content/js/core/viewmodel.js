@@ -9,8 +9,7 @@ var app;
         "use strict";
         var self = this;
         this.data = dataModel;
-        this.loading = ko.observable(false);
-  
+        this.loading = ko.observable(false);  
     }
     ko.BaseViewModel.prototype.refresh = function () { }
 })(ko, jQuery, app || (app = {}));

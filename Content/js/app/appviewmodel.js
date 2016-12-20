@@ -16,7 +16,7 @@
         Loading: {} // Other views are added dynamically by app.addViewModel(...).
     };
     self.dataModel = dataModel;
-
+    self.sessionHub = null;
     // UI state
     self.view = ko.observable(self.Views.Loading);
     self.ajaxRequest = ko.observable(false);
@@ -87,8 +87,8 @@
             //    self.notify(name, message,  severity || "info");
             //};
             return sessionHub;
-        }());
-
+        } ());
+       
         Sammy().run();
     }
 }

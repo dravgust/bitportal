@@ -1,25 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using BitPortal.Models.Wallet;
+using BitPortal.Models.WebSockets;
 using CodersBand.Bitcoin.Histories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace BitPortal.Controllers
 {
-    [DataContract]
-    public class BalanceInfoView
-    {
-        [DataMember]
-        public decimal Confirmed { set; get; }
-        [DataMember]
-        public decimal Unconfirmed { set; get; }
-        [DataMember]
-        public decimal Balance => Confirmed + Unconfirmed;
-    }
-
     [Produces("application/json")]
     [Route("api/[controller]")]
     public class WalletController : Controller
