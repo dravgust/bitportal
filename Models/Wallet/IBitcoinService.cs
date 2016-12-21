@@ -6,9 +6,12 @@ using CodersBand.Bitcoin.States;
 
 namespace BitPortal.Models.Wallet
 {
-    public interface IBitcoinService
+    public interface IBitcoinService : IDisposable
     {
         State InitializationState { get; }
+
+        string Address { get; }
+
         event EventHandler InitializationStateChanged;
 
         int InitializationProgress { get; }

@@ -3,52 +3,54 @@
     
     <div class="col-md-12">
         
-        <div class="col-lg-3">
-            
-                <div id="qr"></div>
-
-        </div>
-        <div class="col-lg-9">
-            
-            <div class="row">
-                <!-- ko with: balance -->
-                <h2 data-bind="text:confirmed + ' &#579'"></h2>
-                <!-- ko if: unconfirmed > 0 -->
-                <h6 title="unconfirmed" data-bind="text:unconfirmed + ' &#579'"></h6>
-                <!-- /ko -->
-                <!-- /ko -->
+        <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-9">
+                <div class="row" style="min-height: 52px">
+                    <!-- ko with: balance -->
+                    <h2 data-bind="text:confirmed + ' &#579'" style="display: table-cell; padding: 10px;"></h2>
+                    <h6 title="unconfirmed" data-bind="visible:unconfirmed > 0, text:unconfirmed + ' &#579'" class="text-danger" style="display: table-cell"></h6>
+                    <!-- /ko -->
+                </div>
             </div>
 
-            <span data-bind="visible:loading"><i class="fa fa-spinner fa-spin"></i></span>
-
-            <div class="row">
-                <div style="padding: 0 10px;">
-                    <table class="table table-hover" style="margin-bottom: 5px;">
-                        <thead>
-                        <tr style="opacity: 0.5">
-                            <th style="width: 50%;">Date Time</th>
-                            <th>Amount</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                    </table>
+        </div>
+        <div class="row">
+            
+            <div class="col-lg-3">
+                <div class="row">
+                    <div data-bind="qrcode:address"></div>
+                    <div id="qr"></div>
                 </div>
+            </div>
+            <div class="col-lg-9">
 
-                <div style="height: 400px; overflow-y: auto; overflow-x: hidden; padding: 0 10px;">
-                    <table class="table table-responsive table-hover" id="history-table">
+                <span data-bind="visible:loading"><i class="fa fa-spinner fa-spin"></i></span>
+
+                <div class="row">
+                    <table class="fixed_headers table table-responsive table-hover" id="history-table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
                         <tbody data-bind="foreach:history">
-                        <tr class="animated flipInX" data-bind="css:{'bg-danger':!confirmed}">
-                            <td style="width: 50%;" data-bind="text:moment(dateTime).format('DD/MM/YYYY HH:mm:ss')"></td>
-                            <td data-bind="text:amount + ' &#579'"></td>
-                            <td></td>
-                        </tr>
+                            <tr class="animated flipInX" data-bind="css:{'bg-danger':!confirmed, 'animated-background':confirmed}">
+                                <td data-bind="text:moment(dateTime).format('DD/MM/YYYY HH:mm:ss')"></td>
+                                <td></td>
+                                <td data-bind="text:amount + ' &#579'"></td>
+                                <td></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
+
             </div>
 
-        </div>
-
+        </div> 
         
     </div>
 

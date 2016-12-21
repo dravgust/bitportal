@@ -25,6 +25,9 @@
             appDataModel.prototype.history = function () {
                 return self.get(self.siteUrl + "api/wallet/history");
             }
+            appDataModel.prototype.address = function () {
+                return self.get(self.siteUrl + "api/wallet/address");
+            }
         }
         return appDataModel;
     })(global.Controller);

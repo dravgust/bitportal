@@ -17,6 +17,7 @@ namespace BitPortal
     internal class Startup
     {
         public IConfigurationRoot Configuration { get; }
+        private static BitcoinService _bitcoinService;
 
         public Startup(IHostingEnvironment env)
         {
@@ -36,8 +37,8 @@ namespace BitPortal
         {
             services.AddMvc();
 
-            var bitcoinService = new BitcoinService();
-            services.AddSingleton<IBitcoinService>(bitcoinService);
+            _bitcoinService = new BitcoinService();
+            services.AddSingleton<IBitcoinService>(_bitcoinService);
             services.AddTransient<ISocketHandler, BitcoinSocketHandler>();
         }
 
@@ -86,7 +87,7 @@ namespace BitPortal
 
         private static void OnShutdown()
         {
-            
+            _bitcoinService?.Dispose();
         }
     }
 }

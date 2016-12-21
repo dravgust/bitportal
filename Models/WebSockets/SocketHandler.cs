@@ -46,7 +46,7 @@ namespace BitPortal.Models.WebSockets
             //    }
             //});
 
-            await Socket.SendAsync(buffer, type, true, token).ConfigureAwait(false);
+            await Socket.SendAsync(buffer, type, true, token);
         }
 
         public abstract void OnClose();
@@ -56,7 +56,7 @@ namespace BitPortal.Models.WebSockets
             if (Socket == null) return;
 
             var buffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes(message));
-            await Socket.SendAsync(buffer, WebSocketMessageType.Text, true, CancellationToken.None).ConfigureAwait(false);
+            await Socket.SendAsync(buffer, WebSocketMessageType.Text, true, CancellationToken.None);
         }
 
         public async void SendAsync(byte[] message)
@@ -64,7 +64,7 @@ namespace BitPortal.Models.WebSockets
             if (Socket == null) return;
 
             var buffer = new ArraySegment<byte>(message);
-            await Socket.SendAsync(buffer, WebSocketMessageType.Binary, true, CancellationToken.None).ConfigureAwait(false);
+            await Socket.SendAsync(buffer, WebSocketMessageType.Binary, true, CancellationToken.None);
         }
 
         public async Task HandleWebSocketAsync(WebSocket webSocket)
@@ -77,7 +77,7 @@ namespace BitPortal.Models.WebSockets
                 {
                     var token = CancellationToken.None;
                     var buffer = new ArraySegment<byte>(new byte[4096]);
-                    var received = await Socket.ReceiveAsync(buffer, token).ConfigureAwait(false);
+                    var received = await Socket.ReceiveAsync(buffer, token);
 
                     switch (received.MessageType)
                     {
@@ -89,7 +89,7 @@ namespace BitPortal.Models.WebSockets
                             break;
                         case WebSocketMessageType.Text:
                             var request = Encoding.UTF8.GetString(buffer.Array, buffer.Offset, buffer.Count);
-                            await OnMessageAsync(request).ConfigureAwait(false);
+                            await OnMessageAsync(request);
                             break;
 
                     }

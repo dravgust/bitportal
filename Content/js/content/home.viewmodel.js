@@ -13,6 +13,8 @@ var app;
         this.balance = ko.observable();
         this.unconfirmedHistory = ko.observableArray();
         this.history = ko.observableArray();
+
+        this.address = ko.observable();
   
         Sammy(function () {
             this.get('#home', function () {
@@ -56,6 +58,7 @@ var app;
                 //    "paging": false
                 //});
 
+
                 app.sessionHub.client.history = function (data) {
 
                     var oldItem = self.history.First(function (item) {
@@ -67,6 +70,10 @@ var app;
                     } else {
                         self.history.unshift(data);
                     }
+
+                    self.data.address().done(function (data) {
+                            self.address(data.address);
+                        });
                 };
 
                 app.sessionHub.client.balance = function (data) {
@@ -74,15 +81,13 @@ var app;
                 };
 
                 //setTimeout(function () {
-
-        
                 //    self.balance({ "confirmed": 7.240912, "unconfirmed": 0.002, "balance": 7.242912 });
 
                 //    var newItem = {
                 //        "address": "n34CGy74Gzk9RzMiGQnftjzrmhfMK3Gm2r",
                 //        "amount": 0.111,
                 //        "dateTime": "2016-12-19T14:59:23.594803+00:00",
-                //        "confirmed": false,
+                //        "confirmed": true,
                 //        "transactionId": "9d1064b978ff466f34a4577988930ed5acdec31388f2318ad7cf6db17ea2ba73"
                 //    };
 
@@ -99,6 +104,11 @@ var app;
 
                 //}, 5000);
 
+                self.data.address()
+                    .done(function(data) {
+                        self.address(data.address);
+                    });
+
                 self.data.balance()
                     .done(function (data) { self.balance(data); });
 
@@ -106,45 +116,6 @@ var app;
                     .done(function(data) {
                         self.history(data);
                     });
-
-                var el = kjua(
-                    {
-                        // render method: 'canvas' or 'image'
-                        render: 'canvas',
-                        // render pixel-perfect lines
-                        crisp: true,
-                        // minimum version: 1..40
-                        minVersion: 1,
-                        // error correction level: 'L', 'M', 'Q' or 'H'
-                        ecLevel: 'H',
-                        // size in pixel
-                        size: 200,
-                        // pixel-ratio, null for devicePixelRatio
-                        ratio: null,
-                        // code color
-                        fill: '#333',
-                        // background color
-                        back: '#fff',
-                        // content
-                        text: 'n34CGy74Gzk9RzMiGQnftjzrmhfMK3Gm2r',
-                        // roundend corners in pc: 0..100
-                        rounded: 100,
-                        // quiet zone in modules
-                        quiet: 0,
-                        // modes: 'plain', 'label' or 'image'
-                        mode: 'label',
-                        // label/image size and pos in pc: 0..100
-                        mSize: 50,
-                        mPosX: 50,
-                        mPosY: 55,
-                        // label
-                        label: 'Ƀ',
-                        fontname: 'Ubuntu',
-                        fontcolor: '#FF9818',
-                        // image element
-                        image: null
-                    });
-                document.getElementById('qr').appendChild(el);
 
                 app.view(self);
             });

@@ -92,6 +92,15 @@ namespace BitPortal.Models.Wallet
             };
         }
 
+        public string Address
+        {
+            get
+            {
+                var rand = new Random();
+                return _httpKeyRingMonitor.KeyRing.GetAddress(rand.Next(100));
+            }
+        }
+
         public async Task<KeyRingBalanceInfo> GetBalanceInfoAsync()
         {
             await WaitUntilInitializedAsync();
@@ -109,6 +118,11 @@ namespace BitPortal.Models.Wallet
             // Let's wait until initialized
             while (_httpKeyRingMonitor.InitializationState != State.Ready)
                 await Task.Delay(100);
+        }
+
+        public void Dispose()
+        {
+            _httpKeyRingMonitor.Stop();
         }
     }
 }

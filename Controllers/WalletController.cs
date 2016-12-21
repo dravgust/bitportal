@@ -32,9 +32,15 @@ namespace BitPortal.Controllers
             _logger = loggerFactory?.CreateLogger<WalletController>();
         }
 
+        [HttpGet("address")]
+        public dynamic GetAddress()
+        {
+            return new { address = _bitcoinService.Address};
+        }
+
         //[HttpGet("{id}", Name = "GetTodo")]
         [HttpGet("balance")]
-        public async Task<BalanceInfoView> GetBalance()
+        public async Task<BalanceInfoView> GetBalanceAsync()
         {
             //Console.WriteLine($"Number of monitored addresses: {safeBalanceInfo.MonitoredAddressCount}");
             //Console.WriteLine($"Balance: {safeBalanceInfo.Balance}");
@@ -56,7 +62,7 @@ namespace BitPortal.Controllers
         }
 
         [HttpGet("history")]
-        public async Task<IEnumerable<AddressHistoryRecord>> GetHistory()
+        public async Task<IEnumerable<AddressHistoryRecord>> GetHistoryAsync()
         {
             //Console.WriteLine("totalreceived: " + history.TotalReceived);
             //Console.WriteLine("totalspent: " + history.TotalSpent);
