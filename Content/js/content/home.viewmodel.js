@@ -32,33 +32,6 @@ var app;
                 //    }
                 //});
 
-
-                //var opt = {
-                //    aoColumns: [
-                //        { data: 'id', "bSortable": false, "sWidth": "55px", "sClass": "center" }
-                //    ]
-                //};
-
-
-
-
-                //$.fn.dataTable.moment('DD/MM/YYYY HH:mm:ss');
-
-                //self.oTable = $("#history-table");
-                //self.oTable.dataTable({
-                //    //"aaSorting": [],
-                //    "order": [[1, 'desc']],
-                //    "oLanguage": {
-                //        "sSearch": "Filter: "
-                //    },
-                //    "bAutoWidth": true,
-                //    "sDom": 't',
-                //    "scrollY": "400px",
-                //    "scrollCollapse": true,
-                //    "paging": false
-                //});
-
-
                 app.sessionHub.client.history = function (data) {
 
                     var oldItem = self.history.First(function (item) {
@@ -80,29 +53,29 @@ var app;
                     self.balance(data);
                 };
 
-                //setTimeout(function () {
-                //    self.balance({ "confirmed": 7.240912, "unconfirmed": 0.002, "balance": 7.242912 });
+               //setInterval(function () {
+               //     self.balance({ "confirmed": 7.240912, "unconfirmed": 0.002, "balance": 7.242912 });
 
-                //    var newItem = {
-                //        "address": "n34CGy74Gzk9RzMiGQnftjzrmhfMK3Gm2r",
-                //        "amount": 0.111,
-                //        "dateTime": "2016-12-19T14:59:23.594803+00:00",
-                //        "confirmed": true,
-                //        "transactionId": "9d1064b978ff466f34a4577988930ed5acdec31388f2318ad7cf6db17ea2ba73"
-                //    };
+               //     var newItem = {
+               //         "address": "n34CGy74Gzk9RzMiGQnftjzrmhfMK3Gm2r",
+               //         "amount": 0.111,
+               //         "dateTime": "2016-12-19T14:59:23.594803+00:00",
+               //         "confirmed": true,
+               //         "transactionId": "9d1064b978ff466f34a4577988930ed5acdec31388f2318ad7cf6db17ea2ba73" + new Date().getMilliseconds()
+               //     };
 
-                //    var oldItem = self.history.First(function (item) {
-                //        return item.transactionId === "9d1064b978ff466f34a4577988930ed5acdec31388f2318ad7cf6db17ea2ba73";
-                //    })();
+               //     var oldItem = self.history.First(function (item) {
+               //         return item.transactionId === "9d1064b978ff466f34a4577988930ed5acdec31388f2318ad7cf6db17ea2ba73";
+               //     })();
 
-                //    if (oldItem) {
-                //        self.history.replace(oldItem, newItem);
+               //     if (oldItem) {
+               //         self.history.replace(oldItem, newItem);
 
-                //    } else {
-                //        self.history.unshift(newItem);
-                //    }
+               //     } else {
+               //         self.history.unshift(newItem);
+               //     }
 
-                //}, 5000);
+               // }, 1000);
 
                 self.data.address()
                     .done(function(data) {

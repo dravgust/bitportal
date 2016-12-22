@@ -1,15 +1,10 @@
-﻿using System;
-using System.ComponentModel;
-using System.Diagnostics;
-using BitPortal.Models.Wallet;
+﻿using BitPortal.Models.Wallet;
 using BitPortal.Models.WebSockets;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
-using NLog;
 using NLog.Extensions.Logging;
 
 namespace BitPortal
