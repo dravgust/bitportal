@@ -47,7 +47,7 @@ namespace BitPortal.Models.WebSockets
             {
                 var arguments = (BitcoinServiceArgs)args;
 
-                SendAsync(Serialize(new { cmd = "history", data = arguments.Transaction }));
+                SendAsync(Serialize(new { cmd = "history", data = arguments.Transactions }));
 
                 SendAsync(Serialize(new { cmd = "balance", data = new BalanceInfoView
                 {

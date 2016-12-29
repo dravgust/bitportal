@@ -13,6 +13,8 @@
     "kjua": "lrsjng/kjua#^0.1.1",
     "datatables": "^1.10.13",
     "animate.css": "^3.5.2",
-    "components-font-awesome": "^4.7.0"
+    "components-font-awesome": "^4.7.0",
+    "knockout.mapping": "^2.0.1",
+    "bootstrap3-typeahead": "^4.0.2"
   }
 }

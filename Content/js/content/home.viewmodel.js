@@ -4,17 +4,104 @@
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var app;
+(function ($, ko, exports) {
+    function entity(parameters) {
+        $.extend(this, parameters);
+    }
+    function observableEntity(parameters) {
+        var data = $.extend({}, parameters);
+        ko.mapping.fromJS(data, {}, this);
+    }
+    function historyRecordArray(list) {
+        var _this = this;
+        this._array = [];
+        list.forEach(function(item) {
+            var el = _this._array.findWhere({ transactionId: item.transactionId });
+            if (!el) {
+                _this._array.push(item);
+            } else {
+                el.amount += item.amount;
+            }
+        });
+        return this._array;
+    }
+    historyRecordArray.prototype.push = function(item) {
+        var el = this._array.findWhere({ transactionId: item.transactionId });
+        if (!el) {
+            this._array.push(item);
+        } else {
+            el.amount += item.amount;
+        }
+    }
+
+    exports.Entity = entity;
+    exports.ObservableEntity = observableEntity;
+    exports.HistoryRecordArray = historyRecordArray;
+} (jQuery, ko, window));
+
 (function (ko, exports) {
     __extends(homeViewModel, ko.BaseViewModel);
     function homeViewModel(app, dataModel) {
         ko.BaseViewModel.call(this, dataModel);
         var self = this;
 
+        this.state = ko.observable();
+        this.state.subscribe(function (value) {
+            if (value === 'Ready')
+                self.refresh();
+        });
+
+        this.progress = ko.observable();
+
         this.balance = ko.observable();
-        this.unconfirmedHistory = ko.observableArray();
         this.history = ko.observableArray();
 
         this.address = ko.observable();
+
+        this.refresh = function () {
+
+            self.data.balance()
+                    .done(function (data) {
+                        self.balance(data);
+                    });
+
+            self.data.history()
+                .done(function (data) {
+                    self.history(new HistoryRecordArray(data));
+                });
+
+
+            self.data.address().done(function (data) {
+                self.address(data.address);
+            });
+
+            app.sessionHub.client.history = function (data) {
+
+                var list = new HistoryRecordArray(data);
+                list.forEach(function (element) {
+
+                    var itmeinlist = self.history.First(function (item) {
+                        return item.transactionId === element.transactionId;
+                    })();
+
+                    if (itmeinlist) {
+                        self.history.replace(itmeinlist, element);
+                    } else {
+                        self.history.unshift(element);
+                    }
+
+                });
+
+                self.data.address().done(function (data) {
+                    self.address(data.address);
+                });
+            };
+
+            app.sessionHub.client.balance = function (data) {
+                self.balance(data);
+            };
+
+        }
   
         Sammy(function () {
             this.get('#home', function () {
@@ -32,26 +119,19 @@ var app;
                 //    }
                 //});
 
-                app.sessionHub.client.history = function (data) {
-
-                    var oldItem = self.history.First(function (item) {
-                        return item.transactionId === data.transactionId;
-                    })();
-
-                    if (oldItem) {
-                        self.history.replace(oldItem, data);
-                    } else {
-                        self.history.unshift(data);
-                    }
-
-                    self.data.address().done(function (data) {
-                            self.address(data.address);
-                        });
+                app.sessionHub.client.state = function(state) {
+                    self.state(state);
+                };
+                app.sessionHub.client.progress = function (progress) {
+                    self.progress(progress);
                 };
 
-                app.sessionHub.client.balance = function (data) {
-                    self.balance(data);
-                };
+                self.data.status()
+                    .done(function (data) {
+
+                        self.state(data.state);
+                        self.progress(data.progress);
+                    });
 
                //setInterval(function () {
                //     self.balance({ "confirmed": 7.240912, "unconfirmed": 0.002, "balance": 7.242912 });
@@ -76,19 +156,6 @@ var app;
                //     }
 
                // }, 1000);
-
-                self.data.address()
-                    .done(function(data) {
-                        self.address(data.address);
-                    });
-
-                self.data.balance()
-                    .done(function (data) { self.balance(data); });
-
-                self.data.history()
-                    .done(function(data) {
-                        self.history(data);
-                    });
 
                 app.view(self);
             });

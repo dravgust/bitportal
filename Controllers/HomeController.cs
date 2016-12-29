@@ -2,7 +2,6 @@
 using BitPortal.Models.Wallet;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 
 namespace BitPortal.Controllers
 {

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using BitPortal.Models.Wallet;
 using BitPortal.Models.WebSockets;
+using CodersBand.Bitcoin;
 using CodersBand.Bitcoin.Histories;
+using CodersBand.Bitcoin.Sending;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -30,6 +32,12 @@ namespace BitPortal.Controllers
         {
             _bitcoinService = bitcoinService;
             _logger = loggerFactory?.CreateLogger<WalletController>();
+        }
+
+        [HttpGet("status")]
+        public dynamic GetStatus()
+        {
+            return new { state = _bitcoinService.InitializationState.ToString(), progress = _bitcoinService.InitializationProgress };
         }
 
         [HttpGet("address")]
@@ -74,5 +82,21 @@ namespace BitPortal.Controllers
             var keyRingHistory = await _bitcoinService.GetHistoryAsync();
             return keyRingHistory.Records;
         }
+
+        [HttpPost("send")]
+        public async Task SendAsync([FromBody] PayTo payTo)
+        {
+            if(string.IsNullOrEmpty(payTo?.Address) || payTo.Amount <= 0)
+                throw new ArgumentNullException(nameof(payTo));
+
+            await _bitcoinService.SendAsync(payTo.Address, payTo.Amount, payTo.Message);
+        }
+    }
+
+    public class PayTo
+    {
+        public string Address { set; get; }
+        public decimal Amount { set; get; }
+        public string Message { set; get; } = "hello world";
     }
 }

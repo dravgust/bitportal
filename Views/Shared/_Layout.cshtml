@@ -33,6 +33,8 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     @*<li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>*@
+                    <li><a href="/"><i class="fa fa-home"></i> Home</a></li>
+                    <li><a href="/#wallet"><i class="fa fa-send"></i> Send</a></li>
                 </ul>
             </div>
         </div>
@@ -48,8 +50,12 @@
 
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/lib/bootstrap3-typeahead/bootstrap3-typeahead.min.js"></script>
         <script src="~/lib/knockout/dist/knockout.js"></script>
+        <script src="~/lib/knockout.mapping/build/output/knockout.mapping-latest.js"></script>
         <script src="~/lib/sammy/lib/sammy.js"></script>
         <script src="~/lib/bootbox.js/bootbox.js"></script>
         <script src="~/lib/moment/moment.js"></script>
@@ -62,6 +68,7 @@
         <script src="~/js/app/websockets.js"></script>
         <script src="~/js/core/viewmodel.js"></script>
         <script src="~/js/content/home.viewmodel.js"></script>
+        <script src="~/js/content/wallet.viewmodel.js"></script>
         <script src="~/js/app/_run.js"></script>
         
         @*<script src="~/js/site.js" asp-append-version="true"></script>*@

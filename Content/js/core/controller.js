@@ -4,31 +4,21 @@
         function request(config) {
             var deffered = $.Deferred();
             var options = $.extend({
-                url: "/",method: 'GET',cache: false,dataType: "json",data: {},processData: true,
-                contentType: 'application/x-www-form-urlencoded; charset=UTF-8'
+                url: "/", method: 'GET', cache: false, processData: true,
+                contentType:  "application/json; charset=utf-8", //'application/x-www-form-urlencoded; charset=UTF-8', 
+                dataType: "json", 
+                data: {}
             }, config);
             var xhr = $.ajax(options)
                 .done(function (data) {
-                    if (data) {
-                        if (data.errorId || data.errorId === 0) {//exceptionMessage
-                            if (data.reason.indexOf('AUTHENTICATION REQUIRED') > -1) {
-                                window.location = "/" + window.location.pathname.split("/")[1] + "/";
-                            } else if (data.reason.indexOf('GeneralError') > -1 || data.reason.indexOf('UnhandledError') > -1) {
-                                bootbox.alert(getErrorContent(data.detailedInformation));
-                            }
-                        } else if (data.status && (String(data.status).toUpperCase() === "ERROR")) {
-                            console.log(data.details);
-                            bootbox.alert(getErrorContent(data.details));
-                        } else {
-                            return deffered.resolve(data);
-                        }
-                        return deffered.reject(data);
-                    }
-                    return deffered.resolve();
+                      return deffered.resolve(data);
                 })
-                .fail(function (error, dta, message) {
-                    console.log(JSON.stringify(error));
-                    bootbox.alert(getErrorContent(JSON.stringify(error)));
+                .fail(function (error, message) {
+                    if (error.responseText) {//{"readyState":4,"responseText":"","status":415,"statusText":"Unsupported Media Type"}
+                        bootbox.alert(getErrorContent(error.responseText));
+                    } else {
+                        bootbox.alert(getErrorContent(JSON.stringify(error).escape()));
+                    }
                     return deffered.reject();
                 });
             var promise = deffered.promise();
@@ -38,14 +28,35 @@
             return promise;
         };
         function getErrorContent(message) {
-            return '<div><p class="text-center">Error: Something went wrong.. Please contact customer support.</p><i class="fa fa-plus-square-o" style="cursor: pointer" onclick="javascript: var t = $(this); t.hide();t.next(\'i\').show().next(\'div\').show();" aria-hidden="true"></i><i class="fa fa-minus-square-o" onclick="javascript: var t = $(this); t.hide(); t.prev(\'i\').show(); t.next(\'div\').hide();" style="display: none; cursor: pointer" aria-hidden="true"></i><div id="error-info-block" style="padding: 0 15px;display: none"><textarea rows="10" cols="50" style="width:100%">' + message.escape() + '</textarea></div></div>';
+            return '<div>' +
+                '<p class="text-center">Error: Something went wrong.. Please contact customer support.</p>' +
+                '<i class="fa fa-plus-square-o" style="cursor: pointer" onclick="javascript: var t = $(this); t.hide();t.next(\'i\').show().next(\'div\').show();" aria-hidden="true"></i>' +
+                '<i class="fa fa-minus-square-o" onclick="javascript: var t = $(this); t.hide(); t.prev(\'i\').show(); t.next(\'div\').hide();" style="display: none; cursor: pointer" aria-hidden="true"></i>' +
+                '<div id="error-info-block" style="padding: 0 15px;display: none">' +
+                '<textarea rows="10" cols="80" style="width:100%">' + message + '</textarea>' +
+                '</div>' +
+                '</div>';
         }
         function controller() {
             //this.siteUrl = "/" + window.location.pathname.split("/")[1] + "/";
             this.siteUrl = "http://localhost:9000/";
         }
-        controller.prototype.get = function (url, data, dataType) {
-            return request({ url: url, data: data, dataType: dataType });
+
+         //$.ajax({
+            //    method: 'get',
+            //    url: "api/wallet/status",
+            //    contentType: "application/json; charset=utf-8",
+            //    headers: {
+            //        'Authorization': 'Bearer ' + self.data.getAccessToken()
+            //    },
+            //    success: function (data) {
+            //        self.myHometown('Your Hometown is : ' + data.hometown);
+            //    }
+            //});
+
+        controller.prototype.get = function (url, data, accessToken, dataType) {
+            return request({
+                url: url, data: data, dataType: dataType, headers: { 'Authorization': 'Bearer ' + accessToken } });
         };
         controller.prototype.post = function (url, data, dataType) {
             return request({ url: url, method: 'POST', data: data, dataType: dataType });

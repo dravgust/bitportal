@@ -22,5 +22,7 @@ namespace BitPortal.Models.Wallet
         Task<KeyRingBalanceInfo> GetBalanceInfoAsync();
 
         Task<KeyRingHistory> GetHistoryAsync();
+
+        Task SendAsync(string address, decimal amount, string message);
     }
 }

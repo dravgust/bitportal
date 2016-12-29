@@ -314,7 +314,7 @@
             }
         }
     };
-    Array.findWhere = function (whereObject) {
+    Array.prototype.findWhere = function (whereObject) {
         for (var el in whereObject) {
             if (whereObject.hasOwnProperty(el)) {
                 for (var i = 0; i < this.length; i++) {

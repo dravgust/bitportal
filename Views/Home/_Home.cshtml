@@ -1,15 +1,23 @@
 ﻿<!-- ko with: home -->
 <div class="row animated fadeIn" data-bind="visible:$parent.view() == $data" style="display: none">
-    
-    <div class="col-md-12">
+    <div class="col-md-12" data-bind="visible:state() === 'InProgress'">
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" 
+                 data-bind="text:progress()  + '%',attr:{style:'width:' + progress() + '%', 'aria-valuenow':progress()}">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12" data-bind="visible:state() === 'Ready'">
         
         <div class="row">
-            <div class="col-lg-3"></div>
+            <div class="col-lg-3">
+
+                </div>
             <div class="col-lg-9">
                 <div class="row" style="min-height: 52px">
                     <!-- ko with: balance -->
                     <h2 data-bind="text:confirmed + ' &#579'" style="display: table-cell; padding: 10px;"></h2>
-                    <h6 title="unconfirmed" data-bind="visible:unconfirmed > 0, text:unconfirmed + ' &#579'" class="text-danger" style="display: table-cell"></h6>
+                    <h6 title="unconfirmed" data-bind="visible:unconfirmed !== 0, text:unconfirmed + ' &#579'" class="text-danger" style="display: table-cell"></h6>
                     <!-- /ko -->
                 </div>
             </div>
@@ -20,7 +28,6 @@
             <div class="col-lg-3">
                 <div class="row">
                     <div data-bind="qrcode:address"></div>
-                    <div id="qr"></div>
                 </div>
             </div>
             <div class="col-lg-9">
@@ -28,20 +35,21 @@
                 <span data-bind="visible:loading"><i class="fa fa-spinner fa-spin"></i></span>
 
                 <div class="row">
-                    <table class="fixed_headers table table-responsive table-hover" id="history-table">
+                    <table class="table table-responsive table-hover" id="history-table">
                         <thead>
                             <tr>
-                                <th></th>
+                                <th>Date Time</th>
                                 <th></th>
                                 <th></th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody data-bind="foreach:history">
-                            <tr class="animated flipInX" data-bind="css:{'bg-danger':!confirmed, 'animated-background':confirmed}">
+                            <tr class="animated slideInRight" data-bind="css:{'bg-danger':!confirmed, 'animated-background':confirmed}">
                                 <td data-bind="text:moment(dateTime).format('DD/MM/YYYY HH:mm:ss')"></td>
-                                <td></td>
-                                <td data-bind="text:amount + ' &#579'"></td>
+                                <td class="text-success" data-bind="text: amount >= 0 ?  parseFloat(amount.toFixed(8)) + ' &#579' : ''"></td>
+                                <td class="text-danger"  data-bind="text: amount < 0 ?  parseFloat(amount.toFixed(8)) + ' &#579' : ''"></td>
+                                
                                 <td></td>
                             </tr>
                         </tbody>

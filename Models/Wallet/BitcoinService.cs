@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CodersBand.Bitcoin;
@@ -6,6 +7,7 @@ using CodersBand.Bitcoin.Balances;
 using CodersBand.Bitcoin.Histories;
 using CodersBand.Bitcoin.KeyManagement;
 using CodersBand.Bitcoin.Monitoring;
+using CodersBand.Bitcoin.Sending;
 using CodersBand.Bitcoin.States;
 
 namespace BitPortal.Models.Wallet
@@ -15,7 +17,7 @@ namespace BitPortal.Models.Wallet
         public State State { set; get; }
         public int InitializationProgress { set; get; }
         public KeyRingBalanceInfo BalanceInfo { set; get; }
-        public AddressHistoryRecord Transaction { set; get; }
+        public List<AddressHistoryRecord> Transactions { set; get; }
     }
 
     public class BitcoinService : IBitcoinService
@@ -76,6 +78,7 @@ namespace BitPortal.Models.Wallet
             _httpKeyRingMonitor.BalanceChanged += delegate (object sender, EventArgs args)
             {
                 var monitor = (HttpKeyRingMonitor)sender;
+                var arguments = (BalanceUpdateEventArgs) args;
 
                 Console.WriteLine();
                 Console.WriteLine("Change happened");
@@ -83,12 +86,12 @@ namespace BitPortal.Models.Wallet
                 Console.WriteLine($"Confirmed balance of safe: {monitor.KeyRingBalanceInfo.Confirmed}");
                 Console.WriteLine($"Unconfirmed balance of safe: {monitor.KeyRingBalanceInfo.Unconfirmed}");
 
-                var transaction = monitor.KeyRingHistory.Records.OrderBy(x => x.DateTime).Last();
+                //var transaction = monitor.KeyRingHistory.Records.OrderBy(x => x.DateTime).Last();
 
-                Console.WriteLine($"TransacitonId: {transaction.TransactionId}");
+                Console.WriteLine($"Transacitons: {string.Join(",", arguments.HistoryRecords.Select(r=>r.TransactionId))}");
 
                 BalanceChanged?.Invoke(null,
-                    new BitcoinServiceArgs {BalanceInfo = monitor.KeyRingBalanceInfo, Transaction = transaction});
+                    new BitcoinServiceArgs {BalanceInfo = monitor.KeyRingBalanceInfo, Transactions = arguments.HistoryRecords });
             };
         }
 
@@ -113,6 +116,37 @@ namespace BitPortal.Models.Wallet
             return _httpKeyRingMonitor.KeyRingHistory;
         }
 
+        public async Task SendAsync(string address, decimal amount, string message)
+        {
+            if (_httpKeyRingMonitor.InitializationState != State.Ready)
+                throw new Exception("not initialized");
+
+            var spender = new HttpKeyRingBuilder(_httpKeyRingMonitor.KeyRing);
+
+            spender.TransactionBuildStateChanged += delegate (object sender, EventArgs args)
+            {
+                var currentSpender = sender as HttpKeyRingBuilder;
+                Console.WriteLine(currentSpender?.TransactionBuildState);
+            };
+
+            Console.WriteLine("Create transaction");
+            var tx = spender.BuildTransaction(
+                new List<AddressAmountPair>
+                {
+                    new AddressAmountPair
+                    {
+                        Address = address,
+                        Amount = amount
+                    }
+                },
+                FeeType.Fastest,
+                "cofe, tea"
+                );
+            Console.WriteLine("Transaction created");
+            await Sender.SendAsync(ConnectionType.RandomNode, tx);
+            Console.WriteLine("Transaction sent");
+        }
+
         private async Task WaitUntilInitializedAsync()
         {
             // Let's wait until initialized
@@ -122,7 +156,7 @@ namespace BitPortal.Models.Wallet
 
         public void Dispose()
         {
-            _httpKeyRingMonitor.Stop();
+            _httpKeyRingMonitor.StopMonitoring();
         }
     }
 }
