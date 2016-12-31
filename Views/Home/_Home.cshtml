@@ -1,66 +1,141 @@
 ﻿<!-- ko with: home -->
 <div class="row animated fadeIn" data-bind="visible:$parent.view() == $data" style="display: none">
-    <div class="col-md-12" data-bind="visible:state() === 'InProgress'">
-        <div class="progress">
-            <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" 
-                 data-bind="text:progress()  + '%',attr:{style:'width:' + progress() + '%', 'aria-valuenow':progress()}">
-            </div>
-        </div>
-    </div>
-    <div class="col-md-12" data-bind="visible:state() === 'Ready'">
-        
+    
+    <div class="col-lg-12">
         <div class="row">
-            <div class="col-lg-3">
+            <div class="col-lg-12">
+                <nav class="navbar navbar-default">
+                    <div class="container-fluid" style="padding-right: 0;">
+                        <div class="navbar-header" style="min-width: 180px;">
+                            <a class="navbar-brand" href="#">
+                                Key Ring 1
+                            </a>
+                        </div>
+                        <div class="collapse navbar-collapse" style="padding: 0;">
+                            <ul class="nav navbar-nav pull-right" style="margin-left: 20px;">
+                                <li style="min-width: 120px;" role="presentation"><a href="/#" class="btn btn-lg btn-default">Address Book</a></li>
+                            </ul>
+                            <ul class="nav navbar-nav pull-right">
+                                <li style="min-width: 120px;" role="presentation" class="active" data-bind="css:{'active' : payTo}"><a href="/#wallet" class="btn btn-lg btn-default">Send</a></li>
+                                <li style="" role="presentation" class=""><a href="/#" class="btn btn-default" style="padding: 4px 8px; border-radius: 0;"><i class="fa fa-3x fa-camera-retro"></i></a></li>
+                                <li style="min-width: 120px;" role="presentation" class=""><a class="btn btn-lg btn-default" href="/#">Receive</a></li>
+                            </ul>
 
-                </div>
-            <div class="col-lg-9">
-                <div class="row" style="min-height: 52px">
-                    <!-- ko with: balance -->
-                    <h2 data-bind="text:confirmed + ' &#579'" style="display: table-cell; padding: 10px;"></h2>
-                    <h6 title="unconfirmed" data-bind="visible:unconfirmed !== 0, text:unconfirmed + ' &#579'" class="text-danger" style="display: table-cell"></h6>
-                    <!-- /ko -->
-                </div>
+                        </div>
+                        
+                    </div>
+</nav>
             </div>
-
         </div>
         <div class="row">
             
             <div class="col-lg-3">
-                <div class="row">
-                    <div data-bind="qrcode:address"></div>
-                </div>
+
+               
             </div>
-            <div class="col-lg-9">
+            <div class="col-lg-9 buy-sell-orders">
 
-                <span data-bind="visible:loading"><i class="fa fa-spinner fa-spin"></i></span>
 
-                <div class="row">
-                    <table class="table table-responsive table-hover" id="history-table">
-                        <thead>
-                            <tr>
-                                <th>Date Time</th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody data-bind="foreach:history">
-                            <tr class="animated slideInRight" data-bind="css:{'bg-danger':!confirmed, 'animated-background':confirmed}">
-                                <td data-bind="text:moment(dateTime).format('DD/MM/YYYY HH:mm:ss')"></td>
-                                <td class="text-success" data-bind="text: amount >= 0 ?  parseFloat(amount.toFixed(8)) + ' &#579' : ''"></td>
-                                <td class="text-danger"  data-bind="text: amount < 0 ?  parseFloat(amount.toFixed(8)) + ' &#579' : ''"></td>
-                                
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
+
+                <div class="row animated fadeIn" data-bind="visible:payTo">
+                    <div class="col-lg-4">
+
+                        <div data-bind="qrcode:address" style="padding: 20px 10px"></div>
+
+
+                    </div>
+                    <div class="col-lg-8">
+
+                        <form role="form" class="" id="form-sending">
+                            <div class="form-body">
+
+                                <!-- ko with: payTo -->
+                                @*<h3 class="form-section"></h3>*@
+                                <div class="form-group" style="margin-bottom: 5px">
+                                    <label class="control-label title-label">Pay to</label>
+                                    <div class="">
+                                        <input style="max-width: 400px;" name="address" placeholder="type address or name" maxlength="64" required="" class="form-control input-lg" autocomplete="off" type="text" data-provide="typeahead"
+                                               data-bind="value:address, attr:{'data-source': $parent.addressBook}">
+                                    </div>
+                                </div>
+                                <div class="form-inline form-group">
+                                    <div class="form-group">
+                                        <label class="control-label title-label">Amount to pay &#579</label>
+                                        <div class="">
+                                            <input style="width: 189px;" placeholder="" name="amount" min="0.00000001" max="100000000" step="1" required="" data-bind="value:amount" class="form-control input-lg input-small" type="number">
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="margin-left: 18px;">
+                                        <label class="control-label title-label">Amount to pay &#36</label>
+                                        <div class="">
+                                            <input style="width: 189px;" placeholder="" min="0.001" max="100000000" step="1" required="" data-bind="value:0" class="form-control input-lg input-small" type="number">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                    @*<div class="form-group">
+                <label class="col-md-4 control-label"></label>
+                <div class="col-md-8">
+                    <input min="0" step="1" required="" data-bind="value:0" placeholder="" class="form-control input-medium" type="number">
+                </div>
+            </div>*@
+
+                                    <!-- /ko -->
+
+                                </div>
+                            <div class="form-actions" style="margin-bottom: 25px;">
+                                <button type="button" class="btn btn-default btn-lg" data-bind="click:cancel">Cancel</button>
+                                <button type="submit" class="btn btn-danger btn-lg"
+                                         data-bind="click:send"> <i class="fa fa-spinner fa-spin" data-bind="visible:sending"></i>&nbsp;&nbsp;Send&nbsp;&nbsp;</button>
+                            </div>
+
+                        </form>
+                    </div>
+
+                </div>
+
+                <div class="row" style="padding: 0 20px;">
+                    <span data-bind="visible:loading"><i class="fa fa-spinner fa-spin"></i></span>
+
+                    <header>
+                        <span class="title">Operation History</span>
+                        @*<span class="text-muted pull-right">
+                        <i class="icn-time"></i> Всего <span class="symbol1">BTC</span> доступно: <span id="md-sell-total">485.64615052</span>
+                    </span>*@
+                    </header>
+                    <div style="height: 440px; overflow-y: hidden; width: 106%;">
+                        <table id="md-sell" class="table table-bordered table-responsive table-hover md-table">
+                            <thead>
+                                <tr>
+                                    @*<th>Цена за <span class="symbol1">BTC</span></th>
+                                <th><span class="symbol1">BTC</span> Сумма</th>
+                                <th>Всего: (<span class="symbol2">USD</span>)</th>*@
+                                    <th>Date Time</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="md-sell-tbody" data-bind="foreach:history">
+                                <tr class="animated slideInRight" data-bind="css:{'bg-danger':!confirmed, 'animated-background':confirmed}">
+                                    <td data-bind="text:moment(dateTime).format('DD MMM YYYY &nbsp;&nbsp;HH:mm:ss')"></td>
+                                    <td class="text-success text-center" data-bind="text: amount >= 0 ?  parseFloat(amount.toFixed(8)) + ' &#579' : ''"></td>
+                                    <td class="text-danger text-center" data-bind="text: amount < 0 ?  parseFloat(amount.toFixed(8)) + ' &#579' : ''"></td>
+
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div id="md-sell-help-text"></div>
                 </div>
 
             </div>
 
-        </div> 
-        
+        </div>
     </div>
+   </div> 
+        
 
-</div>
 <!-- /ko -->

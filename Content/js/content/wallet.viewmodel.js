@@ -10,16 +10,6 @@ var app;
         ko.BaseViewModel.call(this, dataModel);
         var self = this;
 
-        this.state = ko.observable();
-        this.state.subscribe(function(value) {
-            self.refresh();
-        });
-
-        this.progress = ko.observable();
-
-        this.balance = ko.observable();
-        this.history = ko.observableArray();
-
         this.address = ko.observable();
 
         this.addressList = ko.observableArray();
@@ -44,46 +34,21 @@ var app;
 
         this.refresh = function() {
 
-            self.data.balance()
-                    .done(function (data) {
-                        self.balance(data);
-                    });
-
-
-            app.sessionHub.client.balance = function (data) {
-                self.balance(data);
-            };
+            self.data.address()
+                .done(function (data) {
+                    self.addressList.push(data.address);
+                    self.address(data.address);
+                });
         }
   
         Sammy(function () {
             this.get('#wallet', function () {
 
-                app.sessionHub.client.state = function(state) {
-                    self.state(state);
-                };
-                app.sessionHub.client.progress = function (progress) {
-                    self.progress(progress);
-                };
-
-                self.data.status()
-                    .done(function (data) {
-
-                        self.state(data.state);
-                        self.progress(data.progress);
-
-                        self.data.address()
-                            .done(function (data) {
-                                self.addressList.push(data.address);
-                                self.address(data.address);
-                            });
-
-
-
-                    });
+                self.refresh();
 
                 app.view(self);
             });
-            this.get("#pay", function() {
+            this.get("#pay2", function() {
                 app.view(app.Views.Loading);
                 this.app.runRoute("get", "#wallet");
             });

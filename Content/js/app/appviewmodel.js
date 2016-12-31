@@ -23,6 +23,12 @@
     self.loading = ko.computed(function () {
         return self.view() === self.Views.Loading;
     });
+    self.balance = ko.observable();
+    this.state = ko.observable();
+    this.state.subscribe(function (value) {
+        
+    });
+    this.progress = ko.observable();
     $.ajaxSetup({
         beforeSend: function() {
             self.ajaxRequest(true); //IE8 SignalR use Ajax
@@ -80,12 +86,35 @@
 
     self.initialize = function () {
 
+        self.dataModel.getStatus()
+            .done(function (data) {
+
+                self.state(data.state);
+                self.progress(data.progress);
+
+                self.dataModel.getBalance()
+                    .done(function (data) {
+                        self.balance(data);
+                    })["fail"](function (err) {
+                        console.log(err);
+                    });
+
+            })["fail"](function (err) {
+                console.log(err);
+            });
+
         //WebSockets
         self.sessionHub = (function () {
             var sessionHub = new self.SessionHub();
-            //sessionHub.client.notify = function (name, message, severity) {
-            //    self.notify(name, message,  severity || "info");
-            //};
+            sessionHub.client.state = function (state) {
+                self.state(state);
+            };
+            sessionHub.client.progress = function (progress) {
+                self.progress(progress);
+            };
+            sessionHub.client.balance = function (data) {
+                self.balance(data);
+            };
             return sessionHub;
         } ());
        

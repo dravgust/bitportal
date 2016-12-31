@@ -1,13 +1,7 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
-}
-
-/* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+    font-family: "HelveticaNeue","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 /* Set widths on the form inputs since otherwise they're 100% wide */
@@ -17,12 +11,9 @@ textarea {
     max-width: 280px;
 }
 
-.navbar-fixed-top {
-    background-color: #fff;
-}
-
-footer {
+.invisible5 {
     opacity: 0.5;
+    color: #ddd;
 }
 
 /* Hide/rearrange for smaller screens */
@@ -30,10 +21,118 @@ footer {
     /* Hide captions */
 }
 
+.navbar {
+    border-left: none !important;
+    border-radius: 0;
+    border-right: none !important;
+    background-color: #fff;
+}
+
+    .navbar a {
+        margin: 0 2px;
+       
+    }
+
+.btn, .input-lg {
+    border-radius: 0;
+}
+
+.navbar-default {
+    border: none;
+    padding: 1px;
+}
+
+.navbar .nav > li > a:focus, .navbar .nav > li > a:hover {
+    outline: none;
+   
+    text-decoration: none;
+    background-color: transparent;
+}
+
+.navbar .nav > .active > a, .navbar .nav > .active > a:hover, .navbar .nav > .active > a:focus {
+   
+    text-decoration: none;
+    border-color: #ccc;
+}
+
+
+.navbar-fixed-top {
+    background-color: #fff;
+}
+
+buy-sell-orders {
+    padding: 15px;
+}
+
+.buy-sell-orders header {
+    padding: 10px 5px;
+}
+
+.title {
+    font-family: "Open Sans","Lucida Grande",Verdana,Arial,Helvetica,sans-serif;
+    color: #436fa3;
+    z-index: 2;
+    font-weight: normal;
+    font-size: 16px;
+}
+
+.title-label {
+    font-family: "Open Sans","Lucida Grande",Verdana,Arial,Helvetica,sans-serif;
+    z-index: 2;
+    font-weight: normal;
+    font-size: 15px;
+}
+
+.buy-sell-orders span.pull-right {
+    margin-top: 5px;
+    font-size: 12px;
+}
+
+.buy-sell-orders table {
+    width: 60em;
+    overflow-x: visible;
+}
+
+    .buy-sell-orders table thead {
+        display: block;
+    }
+
+    .buy-sell-orders table tbody {
+        display: block;
+        height: 400px;
+        overflow-y: scroll;
+        width: 104%;
+    }
+
+        .buy-sell-orders table thead th, .buy-sell-orders table tbody td {
+            width: 15em;
+        }
+
+.buy-sell-orders tr.active {
+    color: #2380c7;
+    background: #f4f4f4;
+}
+
 table {
     table-layout: fixed;
     width: 100%;
     word-wrap: break-word;
+}
+
+.table-bordered {
+    border: none;
+}
+
+    .table-bordered > thead > tr > th, .table-bordered > thead > tr > td {
+        border-bottom: none;
+    }
+
+.table > thead > tr:first-child > th, .table > tbody > tr:first-child > td {
+    border-left: none;
+}
+
+.table > thead > tr:first-child th:last-child, .table > tbody > tr td:last-child {
+    border-right: none;
 }
 
 @keyframes animatedBackground {
@@ -50,6 +149,7 @@ table {
     animation: animatedBackground 1s linear;
 }
 
+/* validation */
 .field-validation-error, .error {
     color: #f00 !important;
 }

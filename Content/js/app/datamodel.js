@@ -19,10 +19,10 @@
             return sessionStorage.getItem("accessToken");
         }
 
-        appDataModel.prototype.status = function () {
+        appDataModel.prototype.getStatus = function () {
             return this.get(this.siteUrl + "api/wallet/status", null, this.getAccessToken());
         }
-        appDataModel.prototype.balance = function () {
+        appDataModel.prototype.getBalance = function () {
             return this.get(this.siteUrl + "api/wallet/balance");
         }
         appDataModel.prototype.history = function () {

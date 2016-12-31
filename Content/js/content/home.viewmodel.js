@@ -44,34 +44,41 @@ var app;
     function homeViewModel(app, dataModel) {
         ko.BaseViewModel.call(this, dataModel);
         var self = this;
-
-        this.state = ko.observable();
-        this.state.subscribe(function (value) {
-            if (value === 'Ready')
-                self.refresh();
-        });
-
-        this.progress = ko.observable();
-
-        this.balance = ko.observable();
         this.history = ko.observableArray();
-
         this.address = ko.observable();
+
+        this.addressList = ko.observableArray();
+        this.addressBook = ko.pureComputed(function () {
+            return ko.toJSON(self.addressList());
+        }, this);
+        this.sending = ko.observable(false);
+        this.payTo = ko.observable();
+
+        this.send = function () {
+            if ($('#form-sending', 'body').valid() === false) return;
+            self.sending(true);
+            self.data.send(self.payTo()).done(function () {
+                self.payTo(null);
+                $.growl.notice({ message: "Sent successfuly!" });
+            }).always(function () {
+                self.sending(false);
+            });
+        }
+
+        this.cancel = function() {
+           
+            self.payTo(null);
+            app.navigateToHome();
+        }
 
         this.refresh = function () {
 
-            self.data.balance()
-                    .done(function (data) {
-                        self.balance(data);
-                    });
-
-            self.data.history()
-                .done(function (data) {
-                    self.history(new HistoryRecordArray(data));
-                });
-
+            self.data.history().done(function (data) {
+                self.history(new HistoryRecordArray(data));
+            });
 
             self.data.address().done(function (data) {
+                self.addressList.push(data.address);
                 self.address(data.address);
             });
 
@@ -96,43 +103,11 @@ var app;
                     self.address(data.address);
                 });
             };
-
-            app.sessionHub.client.balance = function (data) {
-                self.balance(data);
-            };
-
         }
   
         Sammy(function () {
             this.get('#home', function () {
                
-                // Make a call to the protected Web API by passing in a Bearer Authorization Header
-                //$.ajax({
-                //    method: 'get',
-                //    url: app.dataModel.userInfoUrl,
-                //    contentType: "application/json; charset=utf-8",
-                //    headers: {
-                //        'Authorization': 'Bearer ' + app.dataModel.getAccessToken()
-                //    },
-                //    success: function (data) {
-                //        self.myHometown('Your Hometown is : ' + data.hometown);
-                //    }
-                //});
-
-                app.sessionHub.client.state = function(state) {
-                    self.state(state);
-                };
-                app.sessionHub.client.progress = function (progress) {
-                    self.progress(progress);
-                };
-
-                self.data.status()
-                    .done(function (data) {
-
-                        self.state(data.state);
-                        self.progress(data.progress);
-                    });
-
                //setInterval(function () {
                //     self.balance({ "confirmed": 7.240912, "unconfirmed": 0.002, "balance": 7.242912 });
 
@@ -157,7 +132,19 @@ var app;
 
                // }, 1000);
 
+                self.refresh();
+
                 app.view(self);
+            });
+            this.get("#wallet", function () {
+                //app.view(app.Views.Loading);
+
+                self.payTo({
+                    address: null,
+                    amount: null
+                });
+                app.navigateToHome();
+
             });
             this.get("/", function() {
                 app.view(app.Views.Loading);

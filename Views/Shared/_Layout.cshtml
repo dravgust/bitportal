@@ -9,6 +9,7 @@
         <link href="~/lib/animate.css/animate.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css"/>
         <link rel="stylesheet" href="~/lib/components-font-awesome/css/font-awesome.min.css" />
+        <link href="~/lib/growl/stylesheets/jquery.growl.css" rel="stylesheet" />
         <link rel="stylesheet" href="~/css/site.css"/>
     </environment>
     <environment names="Staging,Production">
@@ -33,20 +34,34 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     @*<li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>*@
-                    <li><a href="/"><i class="fa fa-home"></i> Home</a></li>
-                    <li><a href="/#wallet"><i class="fa fa-send"></i> Send</a></li>
+                    <li><a href="/"><i class="fa fa-key"></i> Key Ring</a></li>
+                    <li><a href="/#settings"><i class="fa fa-cogs"></i> Settings</a></li>
                 </ul>
             </div>
         </div>
     </div>
-    <div class="container body-content">
-        @RenderBody()
-        @RenderSection("views", required: true)
-        <hr />
-        <footer>
-            <p>&copy; 2016 - Codrsband Ltd.</p>
-        </footer>
+<div class="container body-content">
+    <div class="row" style="padding: 0 20px;">
+        <!-- ko with: balance -->
+        <h2 class="animated fadeIn" data-bind="text:confirmed + ' &#579'" style="display: table-cell; padding: 10px;"></h2>
+        <h6 title="unconfirmed" data-bind="visible:unconfirmed !== 0, text:unconfirmed + ' &#579'" class="text-danger" style="display: table-cell"></h6>
+        <!-- /ko -->
     </div>
+    @*<div class="row">
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+                 data-bind="text:progress()  + '%',attr:{style:'width:' + progress() + '%', 'aria-valuenow':progress()}">
+            </div>
+        </div>
+    </div>*@
+    @RenderBody()
+    @RenderSection("views", required: true)
+    
+    <footer class="invisible5 navbar navbar-fixed-bottom" style="padding: 20px; background-color: #fff">
+        <hr />
+        <p>&copy; 2016 - Codrsband Ltd.</p>
+    </footer>
+</div>
 
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
@@ -54,6 +69,7 @@
         <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/lib/bootstrap3-typeahead/bootstrap3-typeahead.min.js"></script>
+        <script src="~/lib/growl/javascripts/jquery.growl.js"></script>
         <script src="~/lib/knockout/dist/knockout.js"></script>
         <script src="~/lib/knockout.mapping/build/output/knockout.mapping-latest.js"></script>
         <script src="~/lib/sammy/lib/sammy.js"></script>

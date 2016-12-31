@@ -18,6 +18,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="appsettings.json" />
+    <Content Include="Content\css\cex.css" />
+    <Content Include="Content\css\font\icon-20160406\icon.css" />
+    <Content Include="Content\css\font\icon-20160406\icon.ttf" />
     <Content Include="Content\css\site.css" />
     <Content Include="Content\css\site.min.css" />
     <Content Include="Content\favicon.ico" />
@@ -107,6 +110,11 @@
     <Content Include="Content\lib\bootbox.js\.bower.json" />
     <Content Include="Content\lib\bootbox.js\bower.json" />
     <Content Include="Content\lib\bootbox.js\package.json" />
+    <Content Include="Content\lib\bootstrap3-typeahead\.bower.json" />
+    <Content Include="Content\lib\bootstrap3-typeahead\bower.json" />
+    <Content Include="Content\lib\bootstrap3-typeahead\composer.json" />
+    <Content Include="Content\lib\bootstrap3-typeahead\package.json" />
+    <Content Include="Content\lib\bootstrap3-typeahead\typeaheadv4.png" />
     <Content Include="Content\lib\bootstrap\.bower.json" />
     <Content Include="Content\lib\bootstrap\dist\css\bootstrap-theme.css" />
     <Content Include="Content\lib\bootstrap\dist\css\bootstrap-theme.min.css" />
@@ -150,6 +158,10 @@
     <Content Include="Content\lib\datatables\media\images\sort_both.png" />
     <Content Include="Content\lib\datatables\media\images\sort_desc.png" />
     <Content Include="Content\lib\datatables\media\images\sort_desc_disabled.png" />
+    <Content Include="Content\lib\growl\.bower.json" />
+    <Content Include="Content\lib\growl\bower.json" />
+    <Content Include="Content\lib\growl\package.json" />
+    <Content Include="Content\lib\growl\stylesheets\jquery.growl.css" />
     <Content Include="Content\lib\jquery-validation-unobtrusive\.bower.json" />
     <Content Include="Content\lib\jquery-validation\.bower.json" />
     <Content Include="Content\lib\jquery\.bower.json" />
@@ -195,6 +207,10 @@
     <None Include="Content\lib\bootbox.js\CONTRIBUTING.md" />
     <None Include="Content\lib\bootbox.js\LICENSE.md" />
     <None Include="Content\lib\bootbox.js\README.md" />
+    <None Include="Content\lib\bootstrap3-typeahead\bootstrap3-typeahead.js" />
+    <None Include="Content\lib\bootstrap3-typeahead\bootstrap3-typeahead.min.js" />
+    <None Include="Content\lib\bootstrap3-typeahead\Gruntfile.js" />
+    <None Include="Content\lib\bootstrap3-typeahead\README.md" />
     <None Include="Content\lib\bootstrap\dist\css\bootstrap-theme.css.map" />
     <None Include="Content\lib\bootstrap\dist\css\bootstrap-theme.min.css.map" />
     <None Include="Content\lib\bootstrap\dist\css\bootstrap.css.map" />
@@ -260,6 +276,7 @@
     <None Include="Content\lib\datatables\media\js\jquery.dataTables.min.js" />
     <None Include="Content\lib\datatables\media\js\jquery.js" />
     <None Include="Content\lib\datatables\Readme.md" />
+    <None Include="Content\lib\growl\javascripts\jquery.growl.js" />
     <None Include="Content\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
     <None Include="Content\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
     <None Include="Content\lib\jquery-validation\dist\additional-methods.js" />
@@ -820,6 +837,6 @@
     <ProjectReference Include="..\CodersBand.Bitcoin\CodersBand.Bitcoin.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Content\images\" />
+    <Folder Include="Content\img\" />
   </ItemGroup>
 </Project>

@@ -1,25 +1,13 @@
 ﻿<!-- ko with: wallet -->
 <div class="row animated fadeIn" data-bind="visible:$parent.view() == $data" style="display: none">
-    <div class="col-md-12" data-bind="visible:state() === 'InProgress'">
-        <div class="progress">
-            <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" 
-                 data-bind="text:progress()  + '%',attr:{style:'width:' + progress() + '%', 'aria-valuenow':progress()}">
-            </div>
-        </div>
-    </div>
-    <div class="col-md-12" data-bind="visible:state() === 'Ready'">
+    <div class="col-md-12">
         
         <div class="row">
             <div class="col-lg-3">
 
                 </div>
             <div class="col-lg-9">
-                <div class="row" style="min-height: 52px">
-                    <!-- ko with: balance -->
-                    <h2 data-bind="text:confirmed + ' &#579'" style="display: table-cell; padding: 10px;"></h2>
-                    <h6 title="unconfirmed" data-bind="visible:unconfirmed > 0, text:unconfirmed + ' &#579'" class="text-danger" style="display: table-cell"></h6>
-                    <!-- /ko -->
-                </div>
+    
             </div>
 
         </div>
@@ -27,14 +15,14 @@
             
             <div class="col-lg-3">
                 <div class="row">
-                    <div data-bind="qrcode:address"></div>
+                    <div data-bind="qrcode:address" style="padding: 20px 0"></div>
                 </div>
             </div>
             <div class="col-lg-9">
-
+                <h3></h3>
                 <span data-bind="visible:loading"><i class="fa fa-spinner fa-spin"></i></span>
 
-                <div class="row">
+                <div class="row" style="padding: 20px;">
                     
                     <form role="form" class="form-horizontal" id="form-sending">
                         <div class="form-body">
@@ -66,7 +54,7 @@
 
                         </div>
                         <div class="form-actions">
-                            <button type="button" class="btn btn-default" data-bind="click:function(){}">Cancel</button>
+                            <button type="button" class="btn btn-default" data-bind="click:function(){payTo({address: '',amount: 0});$root.navigateToHome();}">Cancel</button>
                             <button type="submit" class="btn btn-info" data-bind="click:send"> <i class="fa fa-spinner fa-spin" data-bind="visible:sending"></i>&nbsp;&nbsp;Send&nbsp;&nbsp;</button>
                         </div>
 
