@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using CodersBand.Bitcoin.Balances;
-using CodersBand.Bitcoin.Histories;
-using CodersBand.Bitcoin.States;
+using CB.Bitcoin.Client;
+using CB.Bitcoin.Client.Balances;
+using CB.Bitcoin.Client.Histories;
+using CB.Bitcoin.Client.States;
 
 namespace BitPortal.Models.Wallet
 {
@@ -23,6 +24,6 @@ namespace BitPortal.Models.Wallet
 
         Task<KeyRingHistory> GetHistoryAsync();
 
-        Task SendAsync(string address, decimal amount, string message);
+        Task SendAsync(string address, decimal amount, FeeType feeType = FeeType.Fastest, string message = null);
     }
 }

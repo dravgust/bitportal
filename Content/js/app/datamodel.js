@@ -31,10 +31,15 @@
         appDataModel.prototype.address = function () {
             return this.get(this.siteUrl + "api/wallet/address");
         }
-
         appDataModel.prototype.send = function (payTo) {
             return this.post(this.siteUrl + "api/wallet/send", JSON.stringify(payTo), "text");
         }
+
+
+        appDataModel.prototype.getTicker = function () {
+            return this.get(this.siteUrl + "api/exchange/ticker", null, this.getAccessToken());
+        }
+
         return appDataModel;
     })(global.Controller);
     global.AppDataModel = appDataModel;

@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CodersBand.Bitcoin;
-using CodersBand.Bitcoin.Balances;
-using CodersBand.Bitcoin.Histories;
-using CodersBand.Bitcoin.KeyManagement;
-using CodersBand.Bitcoin.Monitoring;
-using CodersBand.Bitcoin.Sending;
-using CodersBand.Bitcoin.States;
+using BitPortal.Models.Utilities;
+using CB.Bitcoin.Client;
+using CB.Bitcoin.Client.Balances;
+using CB.Bitcoin.Client.Histories;
+using CB.Bitcoin.Client.KeyManagement;
+using CB.Bitcoin.Client.Monitoring;
+using CB.Bitcoin.Client.Sending;
+using CB.Bitcoin.Client.States;
 
 namespace BitPortal.Models.Wallet
 {
@@ -116,7 +117,7 @@ namespace BitPortal.Models.Wallet
             return _httpKeyRingMonitor.KeyRingHistory;
         }
 
-        public async Task SendAsync(string address, decimal amount, string message)
+        public async Task SendAsync(string address, decimal amount, FeeType feeType = FeeType.Fastest, string message = null)
         {
             if (_httpKeyRingMonitor.InitializationState != State.Ready)
                 throw new Exception("not initialized");
@@ -126,10 +127,10 @@ namespace BitPortal.Models.Wallet
             spender.TransactionBuildStateChanged += delegate (object sender, EventArgs args)
             {
                 var currentSpender = sender as HttpKeyRingBuilder;
-                Console.WriteLine(currentSpender?.TransactionBuildState);
+                Console.WriteLine("******" + currentSpender?.TransactionBuildState);
             };
 
-            Console.WriteLine("Create transaction");
+            Console.WriteLine($"Create transaction to address {address} {amount} B {feeType}; message: {message}");
             var tx = spender.BuildTransaction(
                 new List<AddressAmountPair>
                 {
@@ -138,11 +139,9 @@ namespace BitPortal.Models.Wallet
                         Address = address,
                         Amount = amount
                     }
-                },
-                FeeType.Fastest,
-                "cofe, tea"
-                );
-            Console.WriteLine("Transaction created");
+                }, feeType, message);
+
+            Console.WriteLine($"Transaction created {tx.ToJSON()}");
             await Sender.SendAsync(ConnectionType.RandomNode, tx);
             Console.WriteLine("Transaction sent");
         }

@@ -1,5 +1,4 @@
 ﻿using System;
-using BitPortal.Models.Wallet;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -7,7 +6,6 @@ namespace BitPortal.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IBitcoinService _bitcoinService;
         private readonly ILogger<HomeController> _logger;
         private ILogger<HomeController> Logger
         {
@@ -19,9 +17,8 @@ namespace BitPortal.Controllers
                 return _logger;
             }
         }
-        public HomeController(IBitcoinService bitcoinService, ILoggerFactory loggerFactory)
+        public HomeController(ILoggerFactory loggerFactory)
         {
-            _bitcoinService = bitcoinService;
             _logger = loggerFactory?.CreateLogger<HomeController>();
         }
 

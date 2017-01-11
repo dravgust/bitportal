@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using BitPortal.Models.Wallet;
 using BitPortal.Models.WebSockets;
-using CodersBand.Bitcoin;
-using CodersBand.Bitcoin.Histories;
-using CodersBand.Bitcoin.Sending;
+using CB.Bitcoin.Client;
+using CB.Bitcoin.Client.Histories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -60,7 +59,7 @@ namespace BitPortal.Controllers
             //        Console.WriteLine($"{balanceInfo.Address}: {balanceInfo.Balance}");
             //}
 
-            var keyRingBalanceInfo = await _bitcoinService.GetBalanceInfoAsync();
+            var keyRingBalanceInfo = await _bitcoinService.GetBalanceInfoAsync().ConfigureAwait(false);
 
             return new BalanceInfoView
             {
@@ -89,7 +88,7 @@ namespace BitPortal.Controllers
             if(string.IsNullOrEmpty(payTo?.Address) || payTo.Amount <= 0)
                 throw new ArgumentNullException(nameof(payTo));
 
-            await _bitcoinService.SendAsync(payTo.Address, payTo.Amount, payTo.Message);
+            await _bitcoinService.SendAsync(payTo.Address, payTo.Amount, payTo.FeeType, payTo.Message);
         }
     }
 
@@ -97,6 +96,7 @@ namespace BitPortal.Controllers
     {
         public string Address { set; get; }
         public decimal Amount { set; get; }
-        public string Message { set; get; } = "hello world";
+        public FeeType FeeType { set; get; }
+        public string Message { set; get; } = "test message";
     }
 }

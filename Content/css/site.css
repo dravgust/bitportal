@@ -4,16 +4,13 @@
     font-family: "HelveticaNeue","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
-/* Set widths on the form inputs since otherwise they're 100% wide */
-input,
-select,
-textarea {
-    max-width: 280px;
-}
-
 .invisible5 {
     opacity: 0.5;
     color: #ddd;
+}
+
+.opacity5 {
+    opacity: 0.5
 }
 
 /* Hide/rearrange for smaller screens */
@@ -60,7 +57,7 @@ textarea {
     background-color: #fff;
 }
 
-buy-sell-orders {
+.buy-sell-orders {
     padding: 15px;
 }
 
@@ -150,24 +147,57 @@ table {
 }
 
 /* validation */
+
+.fieldContainer {
+    position: relative;
+}
+
+label.error {
+    /*font-weight: normal;
+    left: 0;
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    z-index: 9999;*/
+    display: none !important;
+}
+
 .field-validation-error, .error {
-    color: #f00 !important;
-}
-
-.field-validation-valid {
-    display: none;
-}
-
-.input-validation-error {
-    border: 1px solid #f00 !important;
-    background-color: #fee !important;
+    color: #e4686a !important;
 }
 
 .validation-summary-errors {
-    font-weight: bold !important;
-    color: #f00 !important;
+    color: #e4686a !important;
 }
 
-.validation-summary-valid {
-    display: none;
+input.error {
+    border: 1px solid #e4686a !important;
+    background-color: #fee !important;
+}
+
+/* slider*/
+.slider-selection.tick-slider-selection {
+    background-image: linear-gradient(to bottom, #e7e7e7 0px, #e7e7e7 100%);
+}
+
+.slider-tick.in-selection {
+    background-image: linear-gradient(to bottom, #e7e7e7 0px, #e7e7e7 100%);
+}
+
+.slider-selection {
+    background-image: linear-gradient(to bottom, #f9f9f9 0px, #f5f5f5 100%);
+}
+
+.slider-handle {
+    background-color: #333333;
+    background-image: none;
+    cursor: pointer;
+}
+
+.slider {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -o-user-select: none;
 }

@@ -29,6 +29,9 @@
         
     });
     this.progress = ko.observable();
+
+    this.ticker = ko.observable();
+    
     $.ajaxSetup({
         beforeSend: function() {
             self.ajaxRequest(true); //IE8 SignalR use Ajax
@@ -101,6 +104,12 @@
 
             })["fail"](function (err) {
                 console.log(err);
+            });
+
+        self.dataModel.getTicker()
+            .done(function(data) {
+                //{"timestamp":"1483274470","low":"954.7","high":"976","last":"971.239","volume":"245.11673584","volume30d":"13479.45378257","bid":971.329,"ask":971.4629}
+                self.ticker(data);
             });
 
         //WebSockets

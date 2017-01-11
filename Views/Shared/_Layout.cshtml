@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css"/>
         <link rel="stylesheet" href="~/lib/components-font-awesome/css/font-awesome.min.css" />
         <link href="~/lib/growl/stylesheets/jquery.growl.css" rel="stylesheet" />
+        <link href="~/lib/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="~/css/site.css"/>
     </environment>
     <environment names="Staging,Production">
@@ -36,6 +37,9 @@
                     @*<li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>*@
                     <li><a href="/"><i class="fa fa-key"></i> Key Ring</a></li>
                     <li><a href="/#settings"><i class="fa fa-cogs"></i> Settings</a></li>
+                    <!-- ko with: ticker -->
+                    <li><a href="/#exchange">BTC/USD <i class="text-success fa fa-arrow-up"></i> <span data-bind="text:last"></span></a></li>
+                    <!-- /ko -->
                 </ul>
             </div>
         </div>
@@ -43,8 +47,11 @@
 <div class="container body-content">
     <div class="row" style="padding: 0 20px;">
         <!-- ko with: balance -->
-        <h2 class="animated fadeIn" data-bind="text:confirmed + ' &#579'" style="display: table-cell; padding: 10px;"></h2>
-        <h6 title="unconfirmed" data-bind="visible:unconfirmed !== 0, text:unconfirmed + ' &#579'" class="text-danger" style="display: table-cell"></h6>
+        <h2 class="animated fadeIn" style="display: table-cell; padding: 10px;position: relative">
+            <span data-bind="text:confirmed + ' &#579'"></span><br />
+            <span data-bind="visible:unconfirmed !== 0, text:unconfirmed + ' &#579'" class="text-danger" style="position: absolute; z-index: 9999; font-size: 14px; right: 0;line-height: 0.5;"></span>
+        </h2>
+        <h2 title="" data-bind="visible:true, text:' ~' + (confirmed * ($parent.ticker() ? $parent.ticker().last : '')).toFixed(0) + ' $'" class="invisible5" style="display: table-cell"></h2>
         <!-- /ko -->
     </div>
     @*<div class="row">
@@ -70,6 +77,7 @@
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/lib/bootstrap3-typeahead/bootstrap3-typeahead.min.js"></script>
         <script src="~/lib/growl/javascripts/jquery.growl.js"></script>
+        <script src="~/lib/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
         <script src="~/lib/knockout/dist/knockout.js"></script>
         <script src="~/lib/knockout.mapping/build/output/knockout.mapping-latest.js"></script>
         <script src="~/lib/sammy/lib/sammy.js"></script>

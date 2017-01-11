@@ -33,10 +33,47 @@ var app;
             el.amount += item.amount;
         }
     }
+    function isNumberKey(evt) {
+        var charCode = (evt.which) ? evt.which : event.keyCode
+        if (charCode != 43 && charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+        return true;
+    }
+    function payTo(btcUsd) {
+        var self = this;
+        this.address = null;
+
+        this.amount = ko.observable(0);
+        this.amountUSD = ko.observable(0);
+
+        this.feeType = ko.observable(0);
+
+        this.amountView = ko.pureComputed({
+            read: function () {
+                return (self.amountUSD() / +btcUsd).toFixed(8);
+            },
+            write: function (value) {
+                self.amount(+value);
+            },
+            owner: this
+        });
+
+        this.amountUSDView = ko.pureComputed({
+            read: function () {
+                return (self.amount() * btcUsd).toFixed(0);
+            },
+            write: function (value) {
+                self.amountUSD(+value);
+            },
+            owner: this
+        });
+    }
 
     exports.Entity = entity;
     exports.ObservableEntity = observableEntity;
     exports.HistoryRecordArray = historyRecordArray;
+
+    exports.PayTo = payTo;
 } (jQuery, ko, window));
 
 (function (ko, exports) {
@@ -47,7 +84,7 @@ var app;
         this.history = ko.observableArray();
         this.address = ko.observable();
 
-        this.addressList = ko.observableArray();
+        this.addressList = ko.observableArray(["muD8mUwh7S1emooskFC2LaFXbrxRx6paZG", "mtgt2sxRXDYdY4wYrYW7JV47JijKYhn9vH"]);
         this.addressBook = ko.pureComputed(function () {
             return ko.toJSON(self.addressList());
         }, this);
@@ -55,9 +92,28 @@ var app;
         this.payTo = ko.observable();
 
         this.send = function () {
+            $("#form-sending", "body")
+                .validate({
+                    invalidHandler: function (event, validator) {
+                        var errors = validator.numberOfInvalids();
+                        var $summary = $(".validation-summary-errors", "#form-sending");
+                        if (errors) {
+                            var list = $summary.html($("<ul/>"));
+                            for (var key in validator.errorMap) {
+                                if (validator.errorMap.hasOwnProperty(key)) {
+                                        list.append($("<li/>", { text: key + ": " + validator.errorMap[key] }));
+                                }
+                            }
+                            $summary.show();
+                        } else {
+                            $summary.hide();
+                        }
+                    }
+                });
             if ($('#form-sending', 'body').valid() === false) return;
             self.sending(true);
-            self.data.send(self.payTo()).done(function () {
+            self.data.send(ko.mapping.toJS(self.payTo(), { 'ignore': ["amountView", "amountUSD", "amountUSDView"] }))
+                .done(function () {
                 self.payTo(null);
                 $.growl.notice({ message: "Sent successfuly!" });
             }).always(function () {
@@ -66,8 +122,18 @@ var app;
         }
 
         this.cancel = function() {
-           
-            self.payTo(null);
+            $(".validation-summary-errors", "#form-sending").hide();
+            $(".buy-sell-orders > .bounceInDown:first")
+                .removeClass("bounceInDown")
+                .addClass("bounceOutUp");
+
+            setTimeout(function() {
+                self.payTo(null);
+                $(".buy-sell-orders > .bounceOutUp:first")
+                    .removeClass("bounceOutUp")
+                    .addClass("bounceInDown");
+            }, 1000);
+            
             app.navigateToHome();
         }
 
@@ -139,10 +205,14 @@ var app;
             this.get("#wallet", function () {
                 //app.view(app.Views.Loading);
 
-                self.payTo({
-                    address: null,
-                    amount: null
-                });
+                self.payTo(new PayTo(app.ticker().last));
+
+                //$("#ex13").slider({
+                //    //ticks: [0, 100, 200, 300, 400],
+                //    //ticks_labels: ['$0', '$100', '$200', '$300', '$400'],
+                //    //ticks_snap_bounds: 30
+                //}).on("change", function(el){console.log(el)});
+
                 app.navigateToHome();
 
             });

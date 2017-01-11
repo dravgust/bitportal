@@ -6,7 +6,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ExchangeController.cs" />
     <Compile Include="Controllers\WalletController.cs" />
+    <Compile Include="Models\Market\CEX.IOService.cs" />
+    <Compile Include="Models\Market\IExchangeService.cs" />
+    <Compile Include="Models\Utilities\JsonUtils.cs" />
     <Compile Include="Models\Wallet\BitcoinService.cs" />
     <Compile Include="Models\Wallet\IBitcoinService.cs" />
     <Compile Include="Models\WebSockets\BitcoinSocketHandler.cs" />
@@ -183,6 +187,13 @@
     <Content Include="Content\lib\sammy\examples\form_handling\index.html" />
     <Content Include="Content\lib\sammy\examples\hello_world\index.html" />
     <Content Include="Content\lib\sammy\package.json" />
+    <Content Include="Content\lib\seiyria-bootstrap-slider\.bower.json" />
+    <Content Include="Content\lib\seiyria-bootstrap-slider\bower.json" />
+    <Content Include="Content\lib\seiyria-bootstrap-slider\composer.json" />
+    <Content Include="Content\lib\seiyria-bootstrap-slider\dependencies\css\bootstrap.min.css" />
+    <Content Include="Content\lib\seiyria-bootstrap-slider\dist\css\bootstrap-slider.css" />
+    <Content Include="Content\lib\seiyria-bootstrap-slider\dist\css\bootstrap-slider.min.css" />
+    <Content Include="Content\lib\seiyria-bootstrap-slider\package.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\js\app\datamodel.js" />
@@ -808,6 +819,53 @@
     <None Include="Content\lib\sammy\LICENSE" />
     <None Include="Content\lib\sammy\Rakefile" />
     <None Include="Content\lib\sammy\README.md" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\CHANGELOG.md" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\dependencies\js\jquery.min.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\dependencies\js\modernizr.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\dist\bootstrap-slider.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\dist\bootstrap-slider.min.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\Gruntfile.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\LICENSE.md" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\README.md" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\scripts\release.sh" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\src\js\bootstrap-slider.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\src\less\bootstrap-slider.less" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\src\less\rules.less" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\src\less\variables.less" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\src\sass\bootstrap-slider.scss" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\src\sass\_mixins.scss" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\src\sass\_rules.scss" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\src\sass\_variables.scss" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\test\phantom_bind_polyfill.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\test\specs\AccessibilitySpec.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\test\specs\AriaValueTextFormatterSpec.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\test\specs\AutoRegisterDataProvideSpec.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\test\specs\ConflictingOptionsSpec.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\test\specs\DestroyMethodTests.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\test\specs\DraggingHandlesSpec.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\test\specs\ElementDataAttributesSpec.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\test\specs\EventsSpec.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\test\specs\FocusOptionSpec.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\test\specs\KeyboardSupportSpec.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\test\specs\LogarithmicScaleSpec.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\test\specs\LowAndHighTrackSpec.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\test\specs\NamespaceSpec.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\test\specs\offMethodSpec.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\test\specs\OrientationSpec.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\test\specs\PublicMethodsSpec.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\test\specs\RangeHighlightsSpec.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\test\specs\RefreshMethodSpec.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\test\specs\ResizeSpec.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\test\specs\ScrollableBodySpec.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\test\specs\ScrollableContainerSpec.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\test\specs\TickClickingBehaviorSpec.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\test\specs\TickLabelSpec.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\test\specs\TickMarksSpec.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\test\specs\TooltipMouseOverOptionSpec.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\test\specs\TooltipPositionOptionSpec.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\test\specs\TooltipSplitOptionSpec.js" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\tpl\index.tpl" />
+    <None Include="Content\lib\seiyria-bootstrap-slider\tpl\SpecRunner.tpl" />
     <None Include="Content\_references.js" />
     <None Include="nlog.config" />
     <None Include="Views\Home\Index.cshtml" />
@@ -834,9 +892,9 @@
     <PackageReference Include="QBitNinja.Client" Version="1.0.3.28" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CodersBand.Bitcoin\CodersBand.Bitcoin.csproj" />
+    <Folder Include="Content\img\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Content\img\" />
+    <ProjectReference Include="..\CB.Bitcoin.Client\CB.Bitcoin.Client.csproj" />
   </ItemGroup>
 </Project>

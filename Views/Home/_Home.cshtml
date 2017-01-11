@@ -8,7 +8,7 @@
                     <div class="container-fluid" style="padding-right: 0;">
                         <div class="navbar-header" style="min-width: 180px;">
                             <a class="navbar-brand" href="#">
-                                Key Ring 1
+                                
                             </a>
                         </div>
                         <div class="collapse navbar-collapse" style="padding: 0;">
@@ -24,77 +24,70 @@
                         </div>
                         
                     </div>
-</nav>
+                </nav>
             </div>
         </div>
         <div class="row">
-            
-            <div class="col-lg-3">
-
-               
-            </div>
+            <div class="col-lg-3"></div>
             <div class="col-lg-9 buy-sell-orders">
-
-
-
-                <div class="row animated fadeIn" data-bind="visible:payTo">
+                <div class="row animated bounceInDown" data-bind="visible:payTo">
                     <div class="col-lg-4">
-
                         <div data-bind="qrcode:address" style="padding: 20px 10px"></div>
-
-
                     </div>
-                    <div class="col-lg-8">
-
+                    <div class="col-lg-8">   
                         <form role="form" class="" id="form-sending">
                             <div class="form-body">
-
-                                <!-- ko with: payTo -->
-                                @*<h3 class="form-section"></h3>*@
+                                <!-- ko with: payTo -->          
                                 <div class="form-group" style="margin-bottom: 5px">
-                                    <label class="control-label title-label">Pay to</label>
-                                    <div class="">
-                                        <input style="max-width: 400px;" name="address" placeholder="type address or name" maxlength="64" required="" class="form-control input-lg" autocomplete="off" type="text" data-provide="typeahead"
-                                               data-bind="value:address, attr:{'data-source': $parent.addressBook}">
+                                    <label for="send-address" class="title-label">Pay to</label>
+                                    <div>
+                                        <input id="send-address" name="send-address" placeholder="type address or name" maxlength="64" required=""
+                                               class="form-control input-lg" autocomplete="off" type="text" data-provide="typeahead"
+                                               data-bind="value:address, attr:{'data-source': $parent.addressBook}" />
                                     </div>
                                 </div>
                                 <div class="form-inline form-group">
                                     <div class="form-group">
-                                        <label class="control-label title-label">Amount to pay &#579</label>
-                                        <div class="">
-                                            <input style="width: 189px;" placeholder="" name="amount" min="0.00000001" max="100000000" step="1" required="" data-bind="value:amount" class="form-control input-lg input-small" type="number">
+                                        <label for="send-amount" class="title-label">Amount to pay &#579</label>
+                                        <div>
+                                            <input id="send-amount" name="send-amount" min="0.00000001" max="100000000" step="1" required=""
+                                                   data-bind="value:amountView, valueUpdate:'input'" class="form-control input-lg input-small" type="number" />
                                         </div>
                                     </div>
                                     <div class="form-group" style="margin-left: 18px;">
-                                        <label class="control-label title-label">Amount to pay &#36</label>
-                                        <div class="">
-                                            <input style="width: 189px;" placeholder="" min="0.001" max="100000000" step="1" required="" data-bind="value:0" class="form-control input-lg input-small" type="number">
+                                        <label class="title-label">Amount to pay &#36</label>
+                                        <div>
+                                            <input data-bind="value:amountUSDView, valueUpdate:'input'" class="form-control input-lg input-small" type="number">
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label class="title-label">Fee</label>
+                                    <div style="padding: 0 11px;">
+                                        <input style="width: 100%;" type="text" class="slider"
+                                               data-bind="sliderValue:{value: feeType, reversed: 'true', ticks:[0, 1, 2],ticks_labels: ['Fastest', 'Half Hour', 'Hour'], handle:'square', tooltip: 'hide'}" />
+                                        
+                                        @*<input id="ex13" style="width: 100%;" type="text" data-slider-ticks="[0, 1, 2]" data-slider-reversed="true" data-slider-handle="square" data-slider-tooltip="hide"
+                                                data-slider-ticks-snap-bounds="1" data-slider-ticks-labels='["Fastest", "Half Hour", "Hour"]' />*@
+                                    </div>
 
-                                    @*<div class="form-group">
-                <label class="col-md-4 control-label"></label>
-                <div class="col-md-8">
-                    <input min="0" step="1" required="" data-bind="value:0" placeholder="" class="form-control input-medium" type="number">
-                </div>
-            </div>*@
+                                    </div>
+                                <!-- /ko -->
 
-                                    <!-- /ko -->
-
-                                </div>
+                            </div>
                             <div class="form-actions" style="margin-bottom: 25px;">
                                 <button type="button" class="btn btn-default btn-lg" data-bind="click:cancel">Cancel</button>
                                 <button type="submit" class="btn btn-danger btn-lg"
-                                         data-bind="click:send"> <i class="fa fa-spinner fa-spin" data-bind="visible:sending"></i>&nbsp;&nbsp;Send&nbsp;&nbsp;</button>
+                                        data-bind="click:send"> <i class="fa fa-spinner fa-spin" data-bind="visible:sending"></i>&nbsp;&nbsp;Send&nbsp;&nbsp;</button>
                             </div>
-
+                            <div class="validation-summary-errors" style="display: none;"></div>
                         </form>
+
                     </div>
 
                 </div>
 
-                <div class="row" style="padding: 0 20px;">
+                <div class="row animated bounceInDown" style="padding: 0 20px;">
                     <span data-bind="visible:loading"><i class="fa fa-spinner fa-spin"></i></span>
 
                     <header>

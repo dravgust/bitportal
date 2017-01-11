@@ -1,4 +1,9 @@
-﻿using BitPortal.Models.Wallet;
+﻿using System;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+using BitPortal.Models.Market;
+using BitPortal.Models.Wallet;
 using BitPortal.Models.WebSockets;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,7 +17,7 @@ namespace BitPortal
     internal class Startup
     {
         public IConfigurationRoot Configuration { get; }
-        //private static BitcoinService _bitcoinService;
+        private ILogger<Startup> _logger;
 
         public Startup(IHostingEnvironment env)
         {
@@ -35,12 +40,12 @@ namespace BitPortal
             //_bitcoinService = new BitcoinService();
             //services.AddSingleton<IBitcoinService>(_bitcoinService);
             services.AddSingleton<IBitcoinService, BitcoinService>();
+            services.AddSingleton<IExchangeService, CexIoService>();
             services.AddTransient<ISocketHandler, BitcoinSocketHandler>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApplicationLifetime applicationLifetime)
         {
-            applicationLifetime.ApplicationStopping.Register(OnShutdown);
             loggerFactory.AddNLog();
 
             if (env.IsDevelopment())
@@ -61,24 +66,34 @@ namespace BitPortal
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            //try
-            //{
-            //    var info = new ProcessStartInfo("http://localhost:9000");
-            //    Console.WriteLine(info.FileName);
+            applicationLifetime.ApplicationStopping.Register(OnShutdown);
+            applicationLifetime.ApplicationStarted.Register(OnStarted);
 
-            //    System.Diagnostics.Process.Start("http://localhost:9000");
-            //}
-            //catch(Win32Exception noBrowser)
-            //{
-            //    var path = Environment.ExpandEnvironmentVariables(@"%PROGRAMFILES%\Internet Explorer\iexplore.exe");
+            _logger = loggerFactory.CreateLogger<Startup>();
+        }
 
-            //    Process.Start(path, "http://localhost:9000");
-            //}
-            //catch (System.Exception other)
-            //{
-            //    Console.WriteLine(other.Message);
-            //}
-
+        private void OnStarted()
+        {
+            try
+            {
+                var url = "http://localhost:9000";
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    Process.Start(new ProcessStartInfo("cmd", $"/c start {url}")); // Works ok on windows
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    Process.Start("xdg-open", url);  // Works ok on linux
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    Process.Start("open", url); // Not tested
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+            }
         }
 
         private static void OnShutdown()

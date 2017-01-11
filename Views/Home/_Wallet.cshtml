@@ -4,63 +4,13 @@
         
         <div class="row">
             <div class="col-lg-3">
-
-                </div>
-            <div class="col-lg-9">
-    
-            </div>
-
-        </div>
-        <div class="row">
-            
-            <div class="col-lg-3">
-                <div class="row">
-                    <div data-bind="qrcode:address" style="padding: 20px 0"></div>
-                </div>
+                
             </div>
             <div class="col-lg-9">
                 <h3></h3>
                 <span data-bind="visible:loading"><i class="fa fa-spinner fa-spin"></i></span>
 
-                <div class="row" style="padding: 20px;">
-                    
-                    <form role="form" class="form-horizontal" id="form-sending">
-                        <div class="form-body">
-
-                            <!-- ko with: payTo -->
-                            @*<h3 class="form-section"></h3>*@
-                            <div class="form-group">
-                                <label class="col-md-4 control-label input-lg">Pay to</label>
-                                <div class="col-md-8">
-                                    <input placeholder="type address or name" maxlength="64" required="" class="form-control input-lg" autocomplete="off" type="text"  data-provide="typeahead"
-                                           data-bind="value:address, attr:{'data-source': $parent.addressBook}">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-4 control-label input-lg">Amount to pay</label>
-                                <div class="col-md-8">
-                                    <input min="0.00000001" max="100000000" step="1" required="" data-bind="value:amount" class="form-control input-lg" type="number">
-                                </div>
-                            </div>
-
-                            @*<div class="form-group">
-                                <label class="col-md-4 control-label"></label>
-                                <div class="col-md-8">
-                                    <input min="0" step="1" required="" data-bind="value:0" placeholder="" class="form-control input-medium" type="number">
-                                </div>
-                            </div>*@
-
-                            <!-- /ko -->
-
-                        </div>
-                        <div class="form-actions">
-                            <button type="button" class="btn btn-default" data-bind="click:function(){payTo({address: '',amount: 0});$root.navigateToHome();}">Cancel</button>
-                            <button type="submit" class="btn btn-info" data-bind="click:send"> <i class="fa fa-spinner fa-spin" data-bind="visible:sending"></i>&nbsp;&nbsp;Send&nbsp;&nbsp;</button>
-                        </div>
-
-                    </form>
-
-                </div>
+               
 
             </div>
 
