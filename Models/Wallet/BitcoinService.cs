@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using BitPortal.Models.Utilities;
 using CB.Bitcoin.Client;
@@ -10,6 +9,7 @@ using CB.Bitcoin.Client.KeyManagement;
 using CB.Bitcoin.Client.Monitoring;
 using CB.Bitcoin.Client.Sending;
 using CB.Bitcoin.Client.States;
+using Microsoft.Extensions.Logging;
 
 namespace BitPortal.Models.Wallet
 {
@@ -23,6 +23,18 @@ namespace BitPortal.Models.Wallet
 
     public class BitcoinService : IBitcoinService
     {
+        private readonly ILogger<BitcoinService> _logger;
+        protected ILogger<BitcoinService> Logger
+        {
+            get
+            {
+                if (_logger == null)
+                    throw new ArgumentNullException(nameof(LoggerFactory));
+
+                return _logger;
+            }
+        }
+
         private readonly HttpKeyRingMonitor _httpKeyRingMonitor;
 
         public State InitializationState { private set; get; }
@@ -33,8 +45,10 @@ namespace BitPortal.Models.Wallet
 
         public event EventHandler BalanceChanged;
 
-        public BitcoinService()
+        public BitcoinService(ILoggerFactory loggerFactory)
         {
+            _logger = loggerFactory?.CreateLogger<BitcoinService>();
+
             const string walletFilePath = @"Wallets/hidden.dat";
             const string password = "pswd";
             const Network network = Network.TestNet;
@@ -59,17 +73,19 @@ namespace BitPortal.Models.Wallet
             _httpKeyRingMonitor.InitializationStateChanged += delegate (object sender, EventArgs args)
             {
                 var monitor = (HttpKeyRingMonitor)sender;
-                Console.WriteLine("state changed: " + monitor.InitializationState);
 
-             InitializationState = monitor.InitializationState;
-             InitializationStateChanged?.Invoke(null,
+                _logger.LogDebug($"state changed: {monitor.InitializationState}");
+
+                InitializationState = monitor.InitializationState;
+                InitializationStateChanged?.Invoke(null,
                         new BitcoinServiceArgs {State = monitor.InitializationState});
             };
 
-            _httpKeyRingMonitor.InitializationProgressPercentChanged += delegate (object sender, EventArgs args)
+            _httpKeyRingMonitor.InitializationProgressPercentChanged += delegate(object sender, EventArgs args)
             {
-                var monitor = (HttpKeyRingMonitor)sender;
-                Console.WriteLine("progress changed: " + monitor.InitializationProgressPercent);
+                var monitor = (HttpKeyRingMonitor) sender;
+
+                _logger.LogDebug($"progress changed: {monitor.InitializationProgressPercent}");
 
                 InitializationProgress = monitor.InitializationProgressPercent;
                 InitializationProgressChanged?.Invoke(null,
@@ -81,15 +97,10 @@ namespace BitPortal.Models.Wallet
                 var monitor = (HttpKeyRingMonitor)sender;
                 var arguments = (BalanceUpdateEventArgs) args;
 
-                Console.WriteLine();
-                Console.WriteLine("Change happened");
-                Console.WriteLine($"Balance of safe: {monitor.KeyRingBalanceInfo.Balance}");
-                Console.WriteLine($"Confirmed balance of safe: {monitor.KeyRingBalanceInfo.Confirmed}");
-                Console.WriteLine($"Unconfirmed balance of safe: {monitor.KeyRingBalanceInfo.Unconfirmed}");
-
-                //var transaction = monitor.KeyRingHistory.Records.OrderBy(x => x.DateTime).Last();
-
-                Console.WriteLine($"Transacitons: {string.Join(",", arguments.HistoryRecords.Select(r=>r.TransactionId))}");
+                _logger.LogDebug($"Change happened\r\n" +
+                                 $"Balance of safe: {monitor.KeyRingBalanceInfo.Balance}\r\n" +
+                                 $"Confirmed balance of safe: {monitor.KeyRingBalanceInfo.Confirmed}\r\n" +
+                                 $"Unconfirmed balance of safe: {monitor.KeyRingBalanceInfo.Unconfirmed}");
 
                 BalanceChanged?.Invoke(null,
                     new BitcoinServiceArgs {BalanceInfo = monitor.KeyRingBalanceInfo, Transactions = arguments.HistoryRecords });
@@ -127,11 +138,12 @@ namespace BitPortal.Models.Wallet
             spender.TransactionBuildStateChanged += delegate (object sender, EventArgs args)
             {
                 var currentSpender = sender as HttpKeyRingBuilder;
-                Console.WriteLine("******" + currentSpender?.TransactionBuildState);
+                _logger.LogDebug($"TransactionBuildStateChanged: {currentSpender?.TransactionBuildState}");
             };
 
-            Console.WriteLine($"Create transaction to address {address} {amount} B {feeType}; message: {message}");
-            var tx = spender.BuildTransaction(
+            _logger.LogDebug($"Create transaction to address {address} {amount} B {feeType}; message: {message}");
+
+           var tx = spender.BuildTransaction(
                 new List<AddressAmountPair>
                 {
                     new AddressAmountPair
@@ -141,9 +153,11 @@ namespace BitPortal.Models.Wallet
                     }
                 }, feeType, message);
 
-            Console.WriteLine($"Transaction created {tx.ToJSON()}");
+            _logger.LogDebug($"Transaction created {tx.ToJSON()}");
+
             await Sender.SendAsync(ConnectionType.RandomNode, tx);
-            Console.WriteLine("Transaction sent");
+
+            _logger.LogDebug($"Transaction sent: {tx.Id}" );
         }
 
         private async Task WaitUntilInitializedAsync()
