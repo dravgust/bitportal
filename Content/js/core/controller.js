@@ -11,14 +11,13 @@
             }, config);
             var xhr = $.ajax(options)
                 .done(function (data) {
+                    //bootbox.alert(getErrorContent(JSON.stringify(error).escape()));
                       return deffered.resolve(data);
                 })
                 .fail(function (error, message) {
-                    if (error.responseText) {//{"readyState":4,"responseText":"","status":415,"statusText":"Unsupported Media Type"}
-                        bootbox.alert(getErrorContent(error.responseText));
-                    } else {
-                        bootbox.alert(getErrorContent(JSON.stringify(error).escape()));
-                    }
+                    console.log(error);
+                    //{"readyState":4,"responseText":"","status":415,"statusText":"Unsupported Media Type"}
+                    $.growl.error({ message: "Error: Something went wrong.." });
                     return deffered.reject();
                 });
             var promise = deffered.promise();

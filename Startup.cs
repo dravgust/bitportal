@@ -25,7 +25,7 @@ namespace BitPortal
 
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("applications.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
             builder.AddEnvironmentVariables();
@@ -37,11 +37,22 @@ namespace BitPortal
         {
             services.AddMvc();
 
-            //_bitcoinService = new BitcoinService();
-            //services.AddSingleton<IBitcoinService>(_bitcoinService);
-            services.AddSingleton<IBitcoinService, BitcoinService>();
+            //services.Configure<WalletSettings>(settings => Configuration.GetSection("WalletSettings"));//IOptions<WalletSettings> settings
+            //services.AddSingleton<IConfigurationRoot>(Configuration);
+
             services.AddSingleton<IExchangeService, CexIoService>();
             services.AddTransient<ISocketHandler, BitcoinSocketHandler>();
+ 
+            //_bitcoinService = new BitcoinService();
+            //services.AddSingleton<IBitcoinService>(_bitcoinService);
+            services.AddSingleton<IBitcoinService, BitcoinService>(provider =>
+            {
+                var walletSettings = Configuration.GetSection("WalletSettings");
+                var baseAddress = walletSettings["baseAddress"];
+                var builder = services.BuildServiceProvider();
+                var loggerFactory = builder.GetService<ILoggerFactory>();
+                return new BitcoinService(baseAddress, loggerFactory);
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApplicationLifetime applicationLifetime)
@@ -100,5 +111,10 @@ namespace BitPortal
         {
             //_bitcoinService?.Dispose();
         }
+    }
+
+    public class WalletSettings
+    {
+        public string BaseAddress { set; get; }
     }
 }

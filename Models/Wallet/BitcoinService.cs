@@ -36,6 +36,7 @@ namespace BitPortal.Models.Wallet
         }
 
         private readonly HttpKeyRingMonitor _httpKeyRingMonitor;
+        private readonly string _baseAddress;
 
         public State InitializationState { private set; get; }
         public event EventHandler InitializationStateChanged;
@@ -45,9 +46,11 @@ namespace BitPortal.Models.Wallet
 
         public event EventHandler BalanceChanged;
 
-        public BitcoinService(ILoggerFactory loggerFactory)
+
+        public BitcoinService(string baseAddress, ILoggerFactory loggerFactory)
         {
             _logger = loggerFactory?.CreateLogger<BitcoinService>();
+            _baseAddress = baseAddress;
 
             const string walletFilePath = @"Wallets/hidden.dat";
             const string password = "pswd";
@@ -67,7 +70,7 @@ namespace BitPortal.Models.Wallet
                     throw new Exception("Wrong network");
             }
 
-            _httpKeyRingMonitor = new HttpKeyRingMonitor(keyRing, addressCount: 100);
+            _httpKeyRingMonitor = new HttpKeyRingMonitor(_baseAddress, keyRing, addressCount: 100);
 
             // Report initialization progress
             _httpKeyRingMonitor.InitializationStateChanged += delegate (object sender, EventArgs args)
@@ -155,7 +158,7 @@ namespace BitPortal.Models.Wallet
 
             _logger.LogDebug($"Transaction created {tx.ToJSON()}");
 
-            await Sender.SendAsync(ConnectionType.RandomNode, tx);
+            await Sender.SendAsync(_baseAddress, ConnectionType.Http, tx);
 
             _logger.LogDebug($"Transaction sent: {tx.Id}" );
         }

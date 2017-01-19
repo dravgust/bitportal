@@ -48,10 +48,10 @@
     <div class="row" style="padding: 0 20px;">
         <!-- ko with: balance -->
         <h2 class="animated fadeIn" style="display: table-cell; padding: 10px;position: relative">
-            <span data-bind="text:confirmed + ' &#579'"></span><br />
-            <span data-bind="visible:unconfirmed !== 0, text:unconfirmed + ' &#579'" class="text-danger" style="position: absolute; z-index: 9999; font-size: 14px; right: 0;line-height: 0.5;"></span>
+            <span data-bind="text:parseBitcoin(confirmed) + ' &#579'"></span><br />
+            <span data-bind="visible:unconfirmed !== 0, text:parseBitcoin(unconfirmed) + ' &#579'" class="text-danger" style="position: absolute; z-index: 9999; font-size: 14px; right: 0;line-height: 0.5;"></span>
         </h2>
-        <h2 title="" data-bind="visible:true, text:' ~' + (confirmed * ($parent.ticker() ? $parent.ticker().last : '')).toFixed(0) + ' $'" class="invisible5" style="display: table-cell"></h2>
+        <h2 title="" data-bind="visible:true, text:' ~' + (parseBitcoin(confirmed) * ($parent.ticker() ? $parent.ticker().last : '')).toFixed(0) + ' $'" class="invisible5" style="display: table-cell"></h2>
         <!-- /ko -->
     </div>
     @*<div class="row">

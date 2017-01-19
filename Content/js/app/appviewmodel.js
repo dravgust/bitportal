@@ -98,6 +98,9 @@
                 self.dataModel.getBalance()
                     .done(function (data) {
                         self.balance(data);
+
+                        Sammy().run();
+
                     })["fail"](function (err) {
                         console.log(err);
                     });
@@ -127,7 +130,7 @@
             return sessionHub;
         } ());
        
-        Sammy().run();
+       
     }
 }
 

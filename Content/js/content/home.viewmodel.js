@@ -34,10 +34,15 @@ var app;
         }
     }
     function isNumberKey(evt) {
-        var charCode = (evt.which) ? evt.which : event.keyCode
+        var charCode = (evt.which) ? evt.which : event.keyCode;
         if (charCode != 43 && charCode > 31 && (charCode < 48 || charCode > 57))
             return false;
         return true;
+    }
+    function parseBitcoin(value) {
+        var data = { Satoshi : 1, Bit: 100, MilliBTC: 100000, BTC: 100000000 }
+        var amount = value;
+        return parseFloat(amount.toFixed(8));
     }
     function payTo(btcUsd) {
         var self = this;
@@ -72,6 +77,8 @@ var app;
     exports.Entity = entity;
     exports.ObservableEntity = observableEntity;
     exports.HistoryRecordArray = historyRecordArray;
+
+    exports.parseBitcoin = parseBitcoin;
 
     exports.PayTo = payTo;
 } (jQuery, ko, window));

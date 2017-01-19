@@ -112,8 +112,8 @@
                             <tbody id="md-sell-tbody" data-bind="foreach:history">
                                 <tr class="animated slideInRight" data-bind="css:{'bg-danger':!confirmed, 'animated-background':confirmed}">
                                     <td data-bind="text:moment(dateTime).format('DD MMM YYYY &nbsp;&nbsp;HH:mm:ss')"></td>
-                                    <td class="text-success text-center" data-bind="text: amount >= 0 ?  parseFloat(amount.toFixed(8)) + ' &#579' : ''"></td>
-                                    <td class="text-danger text-center" data-bind="text: amount < 0 ?  parseFloat(amount.toFixed(8)) + ' &#579' : ''"></td>
+                                    <td class="text-success text-center" data-bind="text: amount >= 0 ?  parseBitcoin(amount) + ' &#579' : ''"></td>
+                                    <td class="text-danger text-center" data-bind="text: amount < 0 ?  parseBitcoin(amount) + ' &#579' : ''"></td>
 
                                     <td></td>
                                 </tr>
